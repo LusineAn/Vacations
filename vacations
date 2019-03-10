@@ -1,0 +1,95 @@
+
+--------------------DATABASE----------------------------
+
+1. Create MySQL db:
+https://www.digitalocean.com/community/tutorials/how-to-install-the-latest-mysql-on-ubuntu-16-04
+
+2. Go to db: mysql -u root -p
+
+3. See the databases: show databases;
+
+4. To create a database: CREATE DATABASE dbname; //vacationsdb
+
+5. Select database: USE dbname;
+
+6. Create tables (Database have many to many relationships):
+
+	CREATE TABLE employee (
+    		employee_id Integer Unsigned Auto_Increment Primary Key,
+    		employee_first_name VARCHAR(300) NOT NULL,
+    		employee_last_name VARCHAR(300) NOT NULL,
+			employee_vacation_start DATE,
+    		employee_vacation_end DATE
+    	);
+
+	CREATE TABLE project (
+    		project_id Integer Unsigned Auto_Increment Primary Key,
+    		project_name VARCHAR(300) NOT NULL
+    	);
+
+	CREATE TABLE project_employee (
+		project_id INTEGER Unsigned NOT NULL,
+	    employee_id INTEGER Unsigned NOT NULL,
+	    PRIMARY KEY (project_id, employee_id),
+	    FOREIGN KEY (project_id) REFERENCES project (project_id) ON DELETE RESTRICT ON UPDATE CASCADE,
+	    FOREIGN KEY (employee_id) REFERENCES employee (employee_id) ON DELETE RESTRICT ON UPDATE CASCADE
+	);
+
+7. List tables: show tables;
+
+8. See table: Describe tableName;
+
+9. Find all projects taken by a given employee:
+
+	SELECT
+	    `project`.*
+	FROM
+	    `project`
+	    JOIN `project_employee` ON `project`.`project_id` = `project_employee`.`project`
+	WHERE
+	    `project_employee`.`employee` = 5678
+
+   Find all employees in the given project:
+
+	SELECT
+	    `employee`.*
+	FROM
+	    `employee`
+	    JOIN `project_employee` ON `employee`.`employee_id` = `project_employee`.`employee`
+	WHERE
+	    `project_employee`.`project` = 1234
+
+10. Insert values:
+	INSERT INTO table_name
+	VALUES (value1, value2, value3, ...);
+
+--------------------SERVER----------------------------
+
+1. Create serverName folder
+2. npm init -y
+3. https://www.tutorialspoint.com/nodejs/nodejs_express_framework.htm
+   https://www.youtube.com/watch?v=HPIjjFGYSJ4
+	npm install express --save
+	npm install body-parser --save
+	npm install cookie-parser --save
+(http://localhost:8081/)
+mysql -u root -p
+
+--------------------Frontend----------------------------
+
+https://hackernoon.com/how-to-build-a-react-project-from-scratch-using-webpack-4-and-babel-56d4a26afd32
+
+1.  npm init -y
+2.  npm install webpack webpack-cli --save-dev
+3.  npm install react react-dom --save
+4.  npm install @babel/core babel-loader @babel/preset-env @babel/preset-react --save-dev
+5.  vim index.js ./src
+6.  vim index.html ./src
+7.  vim webpack.config.js ./vacations
+8.  npm install css-loader style-loader --save-dev
+9.  vim .babelrc ./vacations
+10. Add scripts in package.json:
+	"start": "webpack --mode development --watch",
+	"build": "webpack --mode production"
+11. vim App.js ./src/components
+12. vim App.css ./src/styles
