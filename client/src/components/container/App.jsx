@@ -26,14 +26,7 @@ class App extends Component {
         return (
           <div className="my-article-form">
             <h1>My React App!</h1>
-            <Input
-                text="SEO_title"
-                label="seo_title"
-                type="text"
-                id="seo_title"
-                value={seo_title}
-                handleChange={this.handleChange}
-          />
+            
           <UsersData/>
           </div>
         );

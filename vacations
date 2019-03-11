@@ -93,3 +93,6 @@ https://hackernoon.com/how-to-build-a-react-project-from-scratch-using-webpack-4
 	"build": "webpack --mode production"
 11. vim App.js ./src/components
 12. vim App.css ./src/styles
+
+----------React-Bootstrap-----------
+1. Link to react-bootstrap3: https://5c507d49471426000887a6a7--react-bootstrap.netlify.com/components

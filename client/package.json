@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "react": "^16.8.4",
-    "react-dom": "^16.8.4"
+    "react-dom": "^16.8.4",
+    "react-bootstrap": "^0.32.4"
   }
 }
