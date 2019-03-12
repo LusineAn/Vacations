@@ -12,7 +12,7 @@ class Navbar extends Component {
                     <a href="#vacations">Vacations</a>
                 </BSNavbar.Brand>
                 </BSNavbar.Header>
-                <Nav  pullLeft="true">
+                <Nav>
                     <NavItem eventKey={1} href="#employees">Employees</NavItem>
                     <NavItem eventKey={2} href="#projects">Projects</NavItem>
                 </Nav>

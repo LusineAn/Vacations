@@ -14,7 +14,7 @@ https://www.digitalocean.com/community/tutorials/how-to-install-the-latest-mysql
 
 6. Create tables (Database have many to many relationships):
 
-	CREATE TABLE employee (
+	CREATE TABLE employees (
     		employee_id Integer Unsigned Auto_Increment Primary Key,
     		employee_first_name VARCHAR(300) NOT NULL,
     		employee_last_name VARCHAR(300) NOT NULL,
@@ -22,7 +22,7 @@ https://www.digitalocean.com/community/tutorials/how-to-install-the-latest-mysql
     		employee_vacation_end DATE
     	);
 
-	CREATE TABLE project (
+	CREATE TABLE projects (
     		project_id Integer Unsigned Auto_Increment Primary Key,
     		project_name VARCHAR(300) NOT NULL
     	);
@@ -63,6 +63,9 @@ https://www.digitalocean.com/community/tutorials/how-to-install-the-latest-mysql
 	INSERT INTO table_name
 	VALUES (value1, value2, value3, ...);
 
+11. Different commands:
+alter table employees change employee_first_name firstname varchar(100);
+
 --------------------SERVER----------------------------
 
 1. Create serverName folder
@@ -95,4 +98,7 @@ https://hackernoon.com/how-to-build-a-react-project-from-scratch-using-webpack-4
 12. vim App.css ./src/styles
 
 ----------React-Bootstrap-----------
-1. Link to react-bootstrap3: https://5c507d49471426000887a6a7--react-bootstrap.netlify.com/components
+1. Link to react-bootstrap3: https://5c507d49471426000887a6a7--react-bootstrap.netlify.com
+
+*** For create local server - https://github.com/facebook/react-devtools#faq
+*** RecatDevTools https://reactjs.org/blog/2015/09/02/new-react-developer-tools.html#installation

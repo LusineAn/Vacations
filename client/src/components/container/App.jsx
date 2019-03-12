@@ -1,36 +1,27 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 
-import Input from "../presentational/Input.jsx";
-import UsersData from "./UsersData.jsx"
-
-import '../../../assets/App.css';
+import NavBar from "../presentational/NavBar.jsx";
+import Projects from "../presentational/Projects.jsx";
+import Employees from "../presentational/Employees.jsx";
 
 class App extends Component {
 
     constructor() {
         super();
         this.state = {
-          seo_title: ""
-        };
-    
-        this.handleChange = this.handleChange.bind(this);
-      }
-    
-      handleChange(event) {
-        this.setState({ [event.target.id]: event.target.value });
-      }
+            projects: []
+        }
+    }
 
-      render() {
-        const {seo_title} = this.state;
-    
-        return (
-          <div className="my-article-form">
-            <h1>My React App!</h1>
-            
-          <UsersData/>
-          </div>
+    render() {
+        return(
+            <div>
+                <NavBar />
+                <Projects />
+                <Employees />
+            </div>
         );
-      }
+    }
 }
 
 export default App;

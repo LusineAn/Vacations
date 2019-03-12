@@ -3,4 +3,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/container/App.jsx";
 
-ReactDOM.render(<App />, document.getElementById("first-page"));
+import "../assets/stylesheets/vacations.scss"
+
+ReactDOM.render(<App />, document.getElementById("vacations-app"));

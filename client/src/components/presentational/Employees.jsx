@@ -1,14 +1,19 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 
-import {Table} from 'react-bootstrap';
+import {Grid, Row, Col, Table, Button, Form, FormGroup, FormControl, ControlLabel, HelpBlock} from 'react-bootstrap';
 
 class Employees extends Component {
-
     constructor() {
         super();
         this.state = {
-            employees: []
-          };
+            employees: [],
+            employee: {
+                firstname: '',
+                lastname: '',
+                vacation_start: '',
+                vacation_end: ''
+            }
+        }
     }
 
     componentDidMount() {
@@ -16,44 +21,103 @@ class Employees extends Component {
     }
 
     getEmployees = () => {
-      const url = 'http://localhost:8081/employees';
-      fetch(url)
-          .then(response => response.json())
-          .then(response => this.setState({employees: response.data}))
-          .catch(err => console.error(err))
+        const url = 'http://localhost:8081/employees';
+        fetch(url)
+            .then(response => response.json())
+            .then(({data}) => this.setState({employees: data}))
+            .catch(err => console.log(err))
     }
 
     onEmployeeClick = () => {
-        //store-um active employee-n dnel nshvacy
+        console.log("onEmployeesClick");
+    }
+
+    onAddEmployeeClick = () => {
+        const {employee} = this.state;
+        const employeeName = `${employee.firstname} ${employee.lastname}`;
+        const url = `http://localhost:8081/employees/add?firstname=${employee.firstname}&lastname=${employee.lastname}`;
+        fetch(url)
+            .then(response => response.json())
+            .then(this.getEmployees)
+            .catch(err => console.log(err))
+    }
+
+    onEmployeeFirstNameChange = (event) => {
+        this.setState({
+            employee: {
+                ...this.state.employee,
+                firstname: event.target.value
+            }
+        });
+    }
+
+    onEmployeeLastNameChange = (event) => {
+        this.setState({
+            employee: {
+                ...this.state.employee,
+                lastname: event.target.value
+            }
+        });
     }
 
     render() {
-        const employees = this.state.employees;
+        const {employees, employee} = this.state;
+
         return(
-            <Table striped bordered condensed hover>
-                <thead>
-                    <tr>
-                    <th>#</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Vacation Start</th>
-                    <th>Vacation End</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        employees.map((employee, index) => {
-                        <tr key={index} onClick={this.onEmployeeClick}>
-                            <td>employee.firstname</td>
-                            <td>employee.lastname</td>
-                            <td>employee.startVacation</td>
-                            <td>employee.endVacation</td>
-                        </tr>
-                        })
-                    }
-                </tbody>
-            </Table>
-        );
+            <Grid>
+                <Row className="Employees">
+                    <Col className="Employees-list" sm={6}>
+                        <Table striped bordered condensed hover>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Employee First Name</th>
+                                    <th>Employee Last Name</th>
+                                    <th>Vacation's start date</th>
+                                    <th>Vacation's end date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {employees.map((employee, index) => (
+                                    <tr key={employee.index} onClick={this.onEmployeeClick}>
+                                        <td>{index + 1}</td>
+                                        <td>{employee.firstname}</td>
+                                        <td>{employee.lastname}</td>
+                                        <td>{employee.vacation_start ? employee.vacation_start : '-'}</td>
+                                        <td>{employee.vacation_end ? employee.vacation_end : '-'}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    </Col>
+                    <Col className="Employees__adding" sm={4}>
+                        <FormGroup
+                            controlId="formBasicText"
+                            // validationState={this.getValidationState()}
+                            >
+                            <ControlLabel>Add Employee's Data</ControlLabel>
+                            {/* <Form inline> */}
+                                <FormControl
+                                    type="text"
+                                    value={employee.name}
+                                    placeholder="Enter employee First name"
+                                    onChange={this.onEmployeeFirstNameChange}
+                                />
+                                <FormControl
+                                    type="text"
+                                    value={employee.name}
+                                    placeholder="Enter employee Last name"
+                                    onChange={this.onEmployeeLastNameChange}
+                                />
+                            {/* </Form> */}
+                            <FormControl.Feedback />
+                            <HelpBlock>Employee name must be unique.</HelpBlock>
+                        </FormGroup>
+                        <Button onClick={this.onAddEmployeeClick} >Add</Button>
+                    </Col>
+                </Row>
+            </Grid>
+        )
     }
 }
 
