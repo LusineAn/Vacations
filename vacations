@@ -15,24 +15,24 @@ https://www.digitalocean.com/community/tutorials/how-to-install-the-latest-mysql
 6. Create tables (Database have many to many relationships):
 
 	CREATE TABLE employees (
-    		employee_id Integer Unsigned Auto_Increment Primary Key,
-    		employee_first_name VARCHAR(300) NOT NULL,
-    		employee_last_name VARCHAR(300) NOT NULL,
-			employee_vacation_start DATE,
-    		employee_vacation_end DATE
+    		id Integer Unsigned Auto_Increment Primary Key,
+    		first_name VARCHAR(300) NOT NULL,
+    		last_name VARCHAR(300) NOT NULL
     	);
 
 	CREATE TABLE projects (
-    		project_id Integer Unsigned Auto_Increment Primary Key,
-    		project_name VARCHAR(300) NOT NULL
+    		id Integer Unsigned Auto_Increment Primary Key,
+    		name VARCHAR(300) NOT NULL
     	);
 
-	CREATE TABLE project_employee (
+	CREATE TABLE vacations (
 		project_id INTEGER Unsigned NOT NULL,
 	    employee_id INTEGER Unsigned NOT NULL,
+		start_date DATE,
+		end_date DATE,
 	    PRIMARY KEY (project_id, employee_id),
-	    FOREIGN KEY (project_id) REFERENCES project (project_id) ON DELETE RESTRICT ON UPDATE CASCADE,
-	    FOREIGN KEY (employee_id) REFERENCES employee (employee_id) ON DELETE RESTRICT ON UPDATE CASCADE
+	    FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+	    FOREIGN KEY (employee_id) REFERENCES employees (id) ON DELETE RESTRICT ON UPDATE CASCADE
 	);
 
 7. List tables: show tables;

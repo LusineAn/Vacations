@@ -11,8 +11,10 @@ class Employees extends Component {
                 firstname: '',
                 lastname: '',
                 vacation_start: '',
-                vacation_end: ''
-            }
+                vacation_end: '',
+                project: ''
+            },
+            selectedProject: ''
         }
     }
 
@@ -34,8 +36,16 @@ class Employees extends Component {
 
     onAddEmployeeClick = () => {
         const {employee} = this.state;
-        const employeeName = `${employee.firstname} ${employee.lastname}`;
-        const url = `http://localhost:8081/employees/add?firstname=${employee.firstname}&lastname=${employee.lastname}`;
+        const url = `http://localhost:8081/employees/add?firstname=${employee.firstname}&lastname=${employee.lastname}&project=${employee.project}`;
+        fetch(url)
+            .then(response => response.json())
+            .then(this.getEmployees)
+            .catch(err => console.log(err))
+    }
+
+    onDeleteEmployeeClick = () => {
+        const {employee} = this.state;
+        const url = `http://localhost:8081/employees/delete?firstname=${employee.firstname}&lastname=${employee.lastname}`;
         fetch(url)
             .then(response => response.json())
             .then(this.getEmployees)
@@ -60,8 +70,22 @@ class Employees extends Component {
         });
     }
 
+    onEmployeeProjectSelect = (event) => {
+        this.setState({
+            selectedProject:  event.target.value,
+            employee: {
+                ...this.state.employee,
+                project: event.target.value
+            },
+        });
+    }
+
+    getEmployeesFromSelectedProject = () => {
+
+    }
+
     render() {
-        const {employees, employee} = this.state;
+        const {employees, employee, selectedProject} = this.state;
 
         return(
             <Grid>
@@ -71,15 +95,15 @@ class Employees extends Component {
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Employee First Name</th>
-                                    <th>Employee Last Name</th>
+                                    <th>First name</th>
+                                    <th>Last name</th>
                                     <th>Vacation's start date</th>
                                     <th>Vacation's end date</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {employees.map((employee, index) => (
-                                    <tr key={employee.index} onClick={this.onEmployeeClick}>
+                                    <tr key={employee.employee_id} onClick={this.onEmployeeClick}>
                                         <td>{index + 1}</td>
                                         <td>{employee.firstname}</td>
                                         <td>{employee.lastname}</td>
@@ -109,11 +133,18 @@ class Employees extends Component {
                                     placeholder="Enter employee Last name"
                                     onChange={this.onEmployeeLastNameChange}
                                 />
+                                <FormControl
+                                    type="text"
+                                    value={selectedProject}
+                                    placeholder="Select employee's project"
+                                    onChange={this.onEmployeeProjectSelect}
+                                />
                             {/* </Form> */}
                             <FormControl.Feedback />
                             <HelpBlock>Employee name must be unique.</HelpBlock>
                         </FormGroup>
                         <Button onClick={this.onAddEmployeeClick} >Add</Button>
+                        <Button onClick={this.onDeleteEmployeeClick} >Delete</Button>
                     </Col>
                 </Row>
             </Grid>

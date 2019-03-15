@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import {Button} from 'react-bootstrap';
 
-import Navbar from "../presentational/NavBar.jsx"
-import Employees from "../presentational/Employees.jsx"
+import Navbar from "./NavBar.jsx"
+import Employees from "./Employees.jsx"
 
 class UsersData extends Component {
   constructor() {
@@ -44,7 +44,7 @@ class UsersData extends Component {
        <Employees/>
         <div>
           {projects.map(project => 
-            <div key={project.project_id}>{project.project_name}</div>
+            <div key={project.id}>{project.name}</div>
           )}
         </div>
         <div>

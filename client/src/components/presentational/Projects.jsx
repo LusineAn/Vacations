@@ -38,6 +38,15 @@ class Projects extends Component {
             .catch(err => console.log(err))
     }
 
+    onDeleteProjectClick = () => {
+        const {project} = this.state;
+        const url = `http://localhost:8081/projects/delete?name=${project.name}`;
+        fetch(url)
+            .then(response => response.json())
+            .then(this.getProjects)
+            .catch(err => console.log(err))
+    }
+
     onProjectNameChange = (event) => {
         this.setState({
             project: {
@@ -63,9 +72,9 @@ class Projects extends Component {
                             </thead>
                             <tbody>
                                 {projects.map((project, index) => (
-                                    <tr key={project.project_name} onClick={this.onProjectClick}>
+                                    <tr key={project.id} onClick={this.onProjectClick}>
                                         <td>{index + 1}</td>
-                                        <td>{project.project_name}</td>
+                                        <td>{project.name}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -89,6 +98,7 @@ class Projects extends Component {
                             <FormControl.Feedback />
                             <HelpBlock>Project name must be unique.</HelpBlock>
                         </FormGroup>
+                        <Button onClick={this.onDeleteProjectClick} >Delete</Button>
                     </Col>
                 </Row>
             </Grid>

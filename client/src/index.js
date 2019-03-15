@@ -5,4 +5,5 @@ import App from "./components/container/App.jsx";
 
 import "../assets/stylesheets/vacations.scss"
 
+//TO DO
 ReactDOM.render(<App />, document.getElementById("vacations-app"));
