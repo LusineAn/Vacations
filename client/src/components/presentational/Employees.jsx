@@ -23,6 +23,7 @@ class Employees extends Component {
     }
 
     getEmployees = () => {
+        console.log("getEmployees888888888888888888888");
         const url = 'http://localhost:8081/employees';
         fetch(url)
             .then(response => response.json())
@@ -37,7 +38,9 @@ class Employees extends Component {
     onAddEmployeeClick = () => {
         const {employee} = this.state;
         const url = `http://localhost:8081/employees/add?firstname=${employee.firstname}&lastname=${employee.lastname}&project=${employee.project}`;
-        fetch(url)
+        fetch(url,
+            {method: "POST"}
+            )
             .then(response => response.json())
             .then(this.getEmployees)
             .catch(err => console.log(err))
@@ -46,7 +49,9 @@ class Employees extends Component {
     onDeleteEmployeeClick = () => {
         const {employee} = this.state;
         const url = `http://localhost:8081/employees/delete?firstname=${employee.firstname}&lastname=${employee.lastname}`;
-        fetch(url)
+        fetch(url,
+            {method: "DELETE"}
+            )
             .then(response => response.json())
             .then(this.getEmployees)
             .catch(err => console.log(err))
@@ -103,7 +108,7 @@ class Employees extends Component {
                             </thead>
                             <tbody>
                                 {employees.map((employee, index) => (
-                                    <tr key={employee.employee_id} onClick={this.onEmployeeClick}>
+                                    <tr key={employee.id} onClick={this.onEmployeeClick}>
                                         <td>{index + 1}</td>
                                         <td>{employee.firstname}</td>
                                         <td>{employee.lastname}</td>

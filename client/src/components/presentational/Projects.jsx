@@ -32,7 +32,9 @@ class Projects extends Component {
     onAddProjectClick = () => {
         const {project} = this.state;
         const url = `http://localhost:8081/projects/add?name=${project.name}`;
-        fetch(url)
+        fetch(url,
+            {method: "POST"}
+            )
             .then(response => response.json())
             .then(this.getProjects)
             .catch(err => console.log(err))
@@ -41,7 +43,9 @@ class Projects extends Component {
     onDeleteProjectClick = () => {
         const {project} = this.state;
         const url = `http://localhost:8081/projects/delete?name=${project.name}`;
-        fetch(url)
+        fetch(url,
+            {method: "DELETE"}
+            )
             .then(response => response.json())
             .then(this.getProjects)
             .catch(err => console.log(err))
