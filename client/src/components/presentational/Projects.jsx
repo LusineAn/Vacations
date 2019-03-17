@@ -31,18 +31,18 @@ class Projects extends Component {
 
     onAddProjectClick = () => {
         const {project} = this.state;
-        const url = `http://localhost:8081/projects/add?name=${project.name}`;
+        const url = `http://localhost:8081/projects/add?project_name=${project.name}`;
         fetch(url,
             {method: "POST"}
             )
-            .then(response => response.json())
+            // .then(response => response.json())
             .then(this.getProjects)
             .catch(err => console.log(err))
     }
 
     onDeleteProjectClick = () => {
         const {project} = this.state;
-        const url = `http://localhost:8081/projects/delete?name=${project.name}`;
+        const url = `http://localhost:8081/projects/delete?project_name=${project.name}`;
         fetch(url,
             {method: "DELETE"}
             )
