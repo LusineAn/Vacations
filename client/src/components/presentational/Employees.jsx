@@ -124,7 +124,7 @@ class Employees extends Component {
                             controlId="formBasicText"
                             // validationState={this.getValidationState()}
                             >
-                            <ControlLabel>Add Employee's Data</ControlLabel>
+                            <ControlLabel>Add Employee</ControlLabel>
                             {/* <Form inline> */}
                                 <FormControl
                                     type="text"

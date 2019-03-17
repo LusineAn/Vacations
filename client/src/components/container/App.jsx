@@ -1,8 +1,7 @@
 import React, {Component} from "react";
 
 import NavBar from "../presentational/NavBar.jsx";
-import Projects from "../presentational/Projects.jsx";
-import Employees from "../presentational/Employees.jsx";
+import Routers from "../../Routers.jsx";
 
 class App extends Component {
 
@@ -32,11 +31,9 @@ class App extends Component {
         return(
             <div>
                 <NavBar />
-                <Projects />
-                <Employees />
+                <Routers />
             </div>
-        );
-    }
+        )};
 }
 
 export default App;

@@ -13,10 +13,10 @@ class Navbar extends Component {
                 </BSNavbar.Brand>
                 </BSNavbar.Header>
                 <Nav>
-                    <NavItem eventKey={1} href="#employees">Employees</NavItem>
                     <NavItem eventKey={2} href="#projects">Projects</NavItem>
+                    <NavItem eventKey={1} href="#employees">Employees</NavItem>
                 </Nav>
-          </BSNavbar>
+            </BSNavbar>
         );
     }
 }
