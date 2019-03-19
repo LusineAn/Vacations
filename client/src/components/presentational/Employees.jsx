@@ -1,9 +1,7 @@
 import React, {Component} from "react";
-import {observer} from "mobx-react";
 
 import {Grid, Row, Col, Table, Button, Form, FormGroup, FormControl, ControlLabel, HelpBlock} from 'react-bootstrap';
 
-@observer
 class Employees extends Component {
     constructor() {
         super();

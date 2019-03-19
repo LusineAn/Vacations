@@ -4,7 +4,6 @@ const path = require('path');
 class VacationsController {
     
     home (req, res) {
-        // res.sendFile(path.join(__dirname + '../../../client/public/index.html'));
         res.end('Hello Express');
     };
 

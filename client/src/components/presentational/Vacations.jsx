@@ -1,11 +1,8 @@
 import React, { Component } from "react";
-import {observer} from "mobx-react";
 import {Button} from 'react-bootstrap';
 
-import Navbar from "./NavBar"
-import Employees from "./Employees"
+import Employees from "./Employees.jsx";
 
-@observer
 class Vacations extends Component {
   constructor() {
     super();
