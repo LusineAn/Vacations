@@ -9,7 +9,6 @@ class ProjectsController {
             if(err) {
                 return res.send(err);
             }
-            console.log('GET PROJECTS -------- : ');
             return res.json({
                 data: results
             })

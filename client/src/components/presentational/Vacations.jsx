@@ -1,10 +1,12 @@
 import React, { Component } from "react";
+import {observer} from "mobx-react";
 import {Button} from 'react-bootstrap';
 
-import Navbar from "./NavBar.jsx"
-import Employees from "./Employees.jsx"
+import Navbar from "./NavBar"
+import Employees from "./Employees"
 
-class UsersData extends Component {
+@observer
+class Vacations extends Component {
   constructor() {
     super();
     this.state = {
@@ -40,7 +42,6 @@ class UsersData extends Component {
     return (
       <div>
         <Button type="primary">Hello</Button>
-       <Navbar></Navbar>
        <Employees/>
         <div>
           {projects.map(project => 
@@ -57,4 +58,4 @@ class UsersData extends Component {
   }
 }
 
-export default UsersData;
+export default Vacations;

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import { Link } from 'react-router-dom'
 import {Navbar as BSNavbar, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
 
 class Navbar extends Component {
@@ -8,13 +8,15 @@ class Navbar extends Component {
         return(
             <BSNavbar>
                 <BSNavbar.Header>
-                <BSNavbar.Brand>
-                    <a href="#vacations">Vacations</a>
-                </BSNavbar.Brand>
+                    <ul>
+                        <li><Link to="#vacations">Vacations</Link></li>
+                    </ul>
                 </BSNavbar.Header>
                 <Nav>
-                    <NavItem eventKey={2} href="#projects">Projects</NavItem>
-                    <NavItem eventKey={1} href="#employees">Employees</NavItem>
+                <ul>
+                    <li><Link to="#projects">Projects</Link></li>
+                    <li><Link to="#employees">Employees</Link></li>
+                </ul>
                 </Nav>
             </BSNavbar>
         );

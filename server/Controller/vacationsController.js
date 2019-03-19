@@ -1,9 +1,11 @@
 const connection = require('../database');
+const path = require('path');
 
 class VacationsController {
     
     home (req, res) {
-      res.send('Go to /projects to see projects or go to /employee to see employees');
+        // res.sendFile(path.join(__dirname + '../../../client/public/index.html'));
+        res.end('Hello Express');
     };
 
     getVacations (req, res) {
