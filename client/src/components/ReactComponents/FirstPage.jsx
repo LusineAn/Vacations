@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 
-import Navbar from "../presentational/NavBar.jsx"
-import Employees from "../presentational/Employees.jsx"
+import Navbar from "../presentational/NavBar"
+import Employees from "../presentational/Employees"
 
 class FirstPage extends Component {
   constructor() {

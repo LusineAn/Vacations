@@ -2,10 +2,14 @@ const connection = require('../database');
 
 class EmployeesController {
     
-    getEmployees (req, res) {
-        const allEmployees = 'SELECT * FROM employees';
-        
-        connection.query(allEmployees, (err, results) => {
+    getEmployees (req, res) {        
+        const getEmployeesAndProjects = `SELECT employees.firstname,
+                                        employees.lastname,
+                                        projects.name
+                                        FROM vacations
+                                        INNER JOIN employees ON employees.id = vacations.employee_id
+                                        INNER JOIN projects ON projects.id = vacations.project_id`;
+        connection.query(getEmployeesAndProjects, (err, results) => {
             if(err) {
                 return res.send(err);
             }

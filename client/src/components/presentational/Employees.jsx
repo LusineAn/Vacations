@@ -1,8 +1,21 @@
 import React, {Component} from "react";
-
+// import {decorate, observable} from "mobx";
+import {observer} from "mobx-react";
 import {Grid, Row, Col, Table, Button, Form, FormGroup, FormControl, ControlLabel, HelpBlock} from 'react-bootstrap';
 
+import {AppStore} from '../../AppStore';
+
+import DataTable from "../ReactComponents/DataTable/DataTable";
+
+import M from "../../Messages/messages";
+
+// @observer
 class Employees extends Component {
+    
+    state = {
+        AppStore: new AppStore()
+    };
+
     constructor() {
         super();
         this.state = {
@@ -14,12 +27,33 @@ class Employees extends Component {
                 vacation_end: '',
                 project: ''
             },
-            selectedProject: ''
+            employeeHeaders: ['First Name', 'Last Name', 'Project'],
+            selectedProject: '',
+            projects: [],
+            emptyEmployee: false
         }
     }
 
-    componentDidMount() {
+     async componentDidMount() {
         this.getEmployees();
+        const e = this.state.employees;
+        await this.getProjects();
+        const a = this.state.projects;
+        this.setState({
+            selectedProject: this.state.projects[0].name
+        })
+    }
+
+    getProjects = async() => {
+        const url = 'http://localhost:8081/projects';
+        return new Promise((resolve, reject) => {
+            return fetch(url)
+                .then(response => response.json())
+                .then(({data}) => this.setState({projects: data}, () => {
+                    return resolve(data);
+                }))
+                .catch(err => resolve(err));
+        });
     }
 
     getEmployees = () => {
@@ -36,8 +70,15 @@ class Employees extends Component {
     }
 
     onAddEmployeeClick = () => {
-        const {employee} = this.state;
-        const url = `http://localhost:8081/employees/add?firstname=${employee.firstname}&lastname=${employee.lastname}&project=${employee.project}`;
+        const {employee, selectedProject} = this.state;
+        if(employee.firstname.length === 0 || employee.firstname.length === 0 || selectedProject.length === 0) {
+            console.log("You must fill employee's data.");
+            this.setState({
+                emptyEmployee: true
+            })
+            return;
+        }
+        const url = `http://localhost:8081/employees/add?firstname=${employee.firstname}&lastname=${employee.lastname}&project=${selectedProject}`;
         fetch(url,
             {method: "POST"}
             )
@@ -80,7 +121,7 @@ class Employees extends Component {
             selectedProject:  event.target.value,
             employee: {
                 ...this.state.employee,
-                project: event.target.value
+                project: event.target.value 
             },
         });
     }
@@ -90,63 +131,53 @@ class Employees extends Component {
     }
 
     render() {
-        const {employees, employee, selectedProject} = this.state;
-
+        const {employees, employee, selectedProject, employeeHeaders, projects, emptyEmployee} = this.state;
         return(
             <Grid>
                 <Row className="Employees">
-                    <Col className="Employees-list" sm={6}>
-                        <Table striped bordered condensed hover>
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>First name</th>
-                                    <th>Last name</th>
-                                    <th>Vacation's start date</th>
-                                    <th>Vacation's end date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {employees.map((employee, index) => (
-                                    <tr key={employee.id} onClick={this.onEmployeeClick}>
-                                        <td>{index + 1}</td>
-                                        <td>{employee.firstname}</td>
-                                        <td>{employee.lastname}</td>
-                                        <td>{employee.vacation_start ? employee.vacation_start : '-'}</td>
-                                        <td>{employee.vacation_end ? employee.vacation_end : '-'}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </Table>
+                    <Col className="employees-list" sm={6}>
+                        <DataTable
+                            className="Employees-table"
+                            headers={employeeHeaders}
+                            items={employees}
+                        />
                     </Col>
                     <Col className="Employees__adding" sm={4}>
                         <FormGroup
                             controlId="formBasicText"
-                            // validationState={this.getValidationState()}
                             >
                             <ControlLabel>Add Employee</ControlLabel>
-                            {/* <Form inline> */}
-                                <FormControl
-                                    type="text"
-                                    value={employee.name}
-                                    placeholder="Enter employee First name"
-                                    onChange={this.onEmployeeFirstNameChange}
-                                />
-                                <FormControl
-                                    type="text"
-                                    value={employee.name}
-                                    placeholder="Enter employee Last name"
-                                    onChange={this.onEmployeeLastNameChange}
-                                />
-                                <FormControl
-                                    type="text"
-                                    value={selectedProject}
-                                    placeholder="Select employee's project"
-                                    onChange={this.onEmployeeProjectSelect}
-                                />
-                            {/* </Form> */}
-                            <FormControl.Feedback />
-                            <HelpBlock>Employee name must be unique.</HelpBlock>
+                            <FormControl
+                                type="text"
+                                value={employee.name}
+                                placeholder="Enter employee First name"
+                                onChange={this.onEmployeeFirstNameChange}
+                            />
+                            <FormControl
+                                type="text"
+                                value={employee.name}
+                                placeholder="Enter employee Last name"
+                                onChange={this.onEmployeeLastNameChange}
+                            />
+                            <ControlLabel>Select Project</ControlLabel>
+                            <FormControl
+                                componentClass="select"
+                                placeholder="select employee's project"
+                                onChange={this.onEmployeeProjectSelect}
+                                defaultValue="{null}"
+                                value={this.state.selectedProject}
+                            >
+                            {projects.map((project, index) =>
+                                <option
+                                    key = {index}
+                                    value={project.name}>
+                                    {project.name}
+                                </option>
+                                )}
+                            </FormControl> 
+                            {emptyEmployee &&
+                                <HelpBlock>{M.emptyEmployee}</HelpBlock>
+                            }
                         </FormGroup>
                         <Button onClick={this.onAddEmployeeClick} >Add</Button>
                         <Button onClick={this.onDeleteEmployeeClick} >Delete</Button>

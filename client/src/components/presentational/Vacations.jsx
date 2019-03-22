@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {Button} from 'react-bootstrap';
 
-import Employees from "./Employees.jsx";
+import Employees from "./Employees";
 
 class Vacations extends Component {
   constructor() {

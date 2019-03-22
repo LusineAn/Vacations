@@ -1,0 +1,14 @@
+.datatable__container {
+    height: 20em;
+    overflow-y: auto;
+
+    .datatable {
+        th, td {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+        td {
+            text-align: left;
+        }
+    }
+}

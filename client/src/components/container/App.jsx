@@ -1,7 +1,11 @@
 import React, {Component} from "react";
 
-import NavBar from "../presentational/NavBar.jsx";
-import Routers from "../../Routers.jsx";
+import NavBar from "../presentational/NavBar";
+import Vacations from "../presentational/Vacations";
+import Projects from "../presentational/Projects";
+import Employees from "../presentational/Employees";
+import Routes from "../../Routes";
+import FromContainer from "../ReactComponents/FormContainer"
 
 class App extends Component {
 
@@ -12,26 +16,18 @@ class App extends Component {
         }
     }
 
-    getApiUrl() {
-        const {tz, msg} = this.state;
-        const host = 'http://localhost:8081';
-        return host + '/' + tz + '/' + msg + '.json';
-    }
-
-    fetchCurrentTime() {
-        fetch(this.getApiUrl())
-          .then(resp => resp.json())
-          .then(resp => {
-            const currentTime = resp.dateString;
-            this.setState({currentTime})
-          })
-      }
+    // getApiUrl() {
+    //     const {tz, msg} = this.state;
+    //     const host = 'http://localhost:8081';
+    //     return host + '/' + tz + '/' + msg + '.json';
+    // }
 
     render() {
         return(
             <div>
-                <NavBar />
-                <Routers />
+
+                <NavBar></NavBar>
+                <Employees />
             </div>
         )};
 }

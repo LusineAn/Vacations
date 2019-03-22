@@ -9,13 +9,13 @@ class Navbar extends Component {
             <BSNavbar>
                 <BSNavbar.Header>
                     <ul>
-                        <li><Link to="#vacations">Vacations</Link></li>
+                        <li><Link to="/vacations">Vacations</Link></li>
                     </ul>
                 </BSNavbar.Header>
                 <Nav>
                 <ul>
-                    <li><Link to="#projects">Projects</Link></li>
-                    <li><Link to="#employees">Employees</Link></li>
+                    <li><Link to="/projects">Projects</Link></li>
+                    <li><Link to="/employees">Employees</Link></li>
                 </ul>
                 </Nav>
             </BSNavbar>

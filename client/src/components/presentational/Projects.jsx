@@ -1,6 +1,9 @@
 import React, {Component} from "react";
+import {Grid, Row, Col, Button, Form, FormGroup, FormControl, ControlLabel, HelpBlock} from 'react-bootstrap';
 
-import {Grid, Row, Col, Table, Button, Form, FormGroup, FormControl, ControlLabel, HelpBlock} from 'react-bootstrap';
+// import DataTable from "../ReactComponents/DataTable/DataTable";
+
+import M from '../../Messages/messages';
 
 class Projects extends Component {
     constructor() {
@@ -13,7 +16,7 @@ class Projects extends Component {
         }
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.getProjects();
     }
 
@@ -62,34 +65,24 @@ class Projects extends Component {
 
     render() {
         const {projects, project} = this.state;
+        const headers = ['number', 'Project Name'];
 
         return(
             <Grid>
                 <Row className="Projects">
                     <Col className="Projects-list" sm={6}>
-                        <Table striped bordered condensed hover>
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Project Name</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {projects.map((project, index) => (
-                                    <tr key={project.id} onClick={this.onProjectClick}>
-                                        <td>{index + 1}</td>
-                                        <td>{project.name}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </Table>
+                        <DataTable
+                            className="Projects-list123"
+                            headers={headers}
+                            items={projects}
+                        />
                     </Col>
                     <Col className="Projects__adding" sm={4} smOffset={2}>
                         <FormGroup
                             controlId="formBasicText"
                             // validationState={this.getValidationState()}
                             >
-                            <ControlLabel>Add Project</ControlLabel>
+                            <ControlLabel>{M.addProject}</ControlLabel>
                             <Form inline>
                                 <FormControl
                                     type="text"
