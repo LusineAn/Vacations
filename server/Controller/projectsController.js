@@ -3,7 +3,7 @@ const connection = require('../database');
 class ProjectsController {
 
     getProjects (req, res) {
-        const allProjects = `SELECT * FROM projects
+        const allProjects = `SELECT name FROM projects
                              ORDER BY projects.name`;
         
         connection.query(allProjects, (err, results) => {

@@ -6,7 +6,7 @@ class DataTable extends React.Component {
 
     static propTypes = {
         headers: PropTypes.array,
-        items: PropTypes.array
+        items: PropTypes.any
     };
    
     render() {
