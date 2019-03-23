@@ -164,7 +164,6 @@ class Employees extends Component {
                                 componentClass="select"
                                 placeholder="select employee's project"
                                 onChange={this.onEmployeeProjectSelect}
-                                defaultValue="{null}"
                                 value={this.state.selectedProject}
                             >
                             {projects.map((project, index) =>

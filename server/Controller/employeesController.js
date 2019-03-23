@@ -8,7 +8,8 @@ class EmployeesController {
                                         projects.name
                                         FROM vacations
                                         INNER JOIN employees ON employees.id = vacations.employee_id
-                                        INNER JOIN projects ON projects.id = vacations.project_id`;
+                                        INNER JOIN projects ON projects.id = vacations.project_id
+                                        ORDER BY employees.firstname`;
         connection.query(getEmployeesAndProjects, (err, results) => {
             if(err) {
                 return res.send(err);
