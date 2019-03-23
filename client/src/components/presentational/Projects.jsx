@@ -1,70 +1,43 @@
 import React, {Component} from "react";
-import {Grid, Row, Col, Button, Form, FormGroup, FormControl, ControlLabel, HelpBlock} from 'react-bootstrap';
+import {observer} from "mobx-react";
 
-// import DataTable from "../ReactComponents/DataTable/DataTable";
+import {Grid, Row, Col, Button, Form, FormGroup, FormControl, ControlLabel, HelpBlock} from 'react-bootstrap';
+import DataTable from "../ReactComponents/DataTable/DataTable";
+
+import {AppStore} from '../../stores/AppStore';
 
 import M from '../../Messages/messages';
 
+@observer
 class Projects extends Component {
     constructor() {
         super();
         this.state = {
-            projects: [],
-            project: {
-                name: ''
-            }
+            AppStore: new AppStore()
         }
     }
 
-    componentWillMount() {
-        this.getProjects();
-    }
-
-    getProjects = () => {
-        const url = 'http://localhost:8081/projects';
-        fetch(url)
-            .then(response => response.json())
-            .then(({data}) => this.setState({projects: data}))
-            .catch(err => console.log(err))
-    }
-
-    onProjectClick = () => {
-        console.log("onProjectsClick");
+    componentDidMount() {
+        this.state.AppStore.getProjects();
     }
 
     onAddProjectClick = () => {
-        const {project} = this.state;
-        const url = `http://localhost:8081/projects/add?project_name=${project.name}`;
-        fetch(url,
-            {method: "POST"}
-            )
-            // .then(response => response.json())
-            .then(this.getProjects)
-            .catch(err => console.log(err))
+        const store = this.state.AppStore;
+        store.addProject(store.project);
     }
 
     onDeleteProjectClick = () => {
-        const {project} = this.state;
-        const url = `http://localhost:8081/projects/delete?project_name=${project.name}`;
-        fetch(url,
-            {method: "DELETE"}
-            )
-            .then(response => response.json())
-            .then(this.getProjects)
-            .catch(err => console.log(err))
+        const store = this.state.AppStore;
+        store.deleteProject(store.project);
     }
 
     onProjectNameChange = (event) => {
-        this.setState({
-            project: {
-                // ...this.state.project,
-                name: event.target.value
-            }
-        });
+        const projectName = event.target.value;
+        this.state.AppStore.setProject(projectName);
     }
 
     render() {
-        const {projects, project} = this.state;
+        const {projects, project, emptyProject, isProjectUnique} = this.state.AppStore;
         const headers = ['number', 'Project Name'];
 
         return(
@@ -78,10 +51,7 @@ class Projects extends Component {
                         />
                     </Col>
                     <Col className="Projects__adding" sm={4} smOffset={2}>
-                        <FormGroup
-                            controlId="formBasicText"
-                            // validationState={this.getValidationState()}
-                            >
+                        <FormGroup controlId="formBasicText">
                             <ControlLabel>{M.addProject}</ControlLabel>
                             <Form inline>
                                 <FormControl
@@ -93,7 +63,10 @@ class Projects extends Component {
                                 <Button onClick={this.onAddProjectClick}>Add</Button>
                             </Form>
                             <FormControl.Feedback />
-                            <HelpBlock>Project name must be unique.</HelpBlock>
+                            {emptyProject || !isProjectUnique &&
+                                <HelpBlock>{emptyProject ? M.emptyProject :
+                                    M.nonUniqueProject}</HelpBlock>
+                            }
                         </FormGroup>
                         <Button onClick={this.onDeleteProjectClick} >Delete</Button>
                     </Col>

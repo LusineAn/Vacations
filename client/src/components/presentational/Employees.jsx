@@ -1,15 +1,16 @@
 import React, {Component} from "react";
-// import {decorate, observable} from "mobx";
+import {decorate, observable} from "mobx";
 import {observer} from "mobx-react";
-import {Grid, Row, Col, Table, Button, Form, FormGroup, FormControl, ControlLabel, HelpBlock} from 'react-bootstrap';
+import Immutable from 'immutable';
 
-import {AppStore} from '../../AppStore';
-
+import {Grid, Row, Col, Button, FormGroup, FormControl, ControlLabel, HelpBlock} from 'react-bootstrap';
 import DataTable from "../ReactComponents/DataTable/DataTable";
+
+import {AppStore} from '../../stores/AppStore';
 
 import M from "../../Messages/messages";
 
-// @observer
+@observer
 class Employees extends Component {
     
     state = {
@@ -19,6 +20,7 @@ class Employees extends Component {
     constructor() {
         super();
         this.state = {
+            AppStore: new AppStore(),
             employees: [],
             employee: {
                 firstname: '',
@@ -29,101 +31,53 @@ class Employees extends Component {
             },
             employeeHeaders: ['First Name', 'Last Name', 'Project'],
             selectedProject: '',
-            projects: [],
+            // projects: this.state.AppStore.projects,
             emptyEmployee: false
         }
     }
 
-     async componentDidMount() {
-        this.getEmployees();
-        const e = this.state.employees;
-        await this.getProjects();
-        const a = this.state.projects;
-        this.setState({
-            selectedProject: this.state.projects[0].name
-        })
+    async componentDidMount() {
+        const store = this.state.AppStore;
+        store.getEmployees();
+        await store.getProjects();
+        store.setSelectedProject(store.projects[0].name);
     }
 
-    getProjects = async() => {
-        const url = 'http://localhost:8081/projects';
-        return new Promise((resolve, reject) => {
-            return fetch(url)
-                .then(response => response.json())
-                .then(({data}) => this.setState({projects: data}, () => {
-                    return resolve(data);
-                }))
-                .catch(err => resolve(err));
-        });
-    }
-
-    getEmployees = () => {
-        console.log("getEmployees888888888888888888888");
-        const url = 'http://localhost:8081/employees';
-        fetch(url)
-            .then(response => response.json())
-            .then(({data}) => this.setState({employees: data}))
-            .catch(err => console.log(err))
-    }
-
-    onEmployeeClick = () => {
-        console.log("onEmployeesClick");
-    }
+    // getProjects = async() => {
+    //     const url = 'http://localhost:8081/projects';
+    //     return new Promise((resolve, reject) => {
+    //         return fetch(url)
+    //             .then(response => response.json())
+    //             .then(({data}) => this.setState({projects: data}, () => {
+    //                 return resolve(data);
+    //             }))
+    //             .catch(err => resolve(err));
+    //     });
+    // }
 
     onAddEmployeeClick = () => {
         const {employee, selectedProject} = this.state;
-        if(employee.firstname.length === 0 || employee.firstname.length === 0 || selectedProject.length === 0) {
-            console.log("You must fill employee's data.");
-            this.setState({
-                emptyEmployee: true
-            })
-            return;
-        }
-        const url = `http://localhost:8081/employees/add?firstname=${employee.firstname}&lastname=${employee.lastname}&project=${selectedProject}`;
-        fetch(url,
-            {method: "POST"}
-            )
-            .then(response => response.json())
-            .then(this.getEmployees)
-            .catch(err => console.log(err))
+        this.state.store.addEmployee(employee, selectedProject);
     }
 
     onDeleteEmployeeClick = () => {
         const {employee} = this.state;
-        const url = `http://localhost:8081/employees/delete?firstname=${employee.firstname}&lastname=${employee.lastname}`;
-        fetch(url,
-            {method: "DELETE"}
-            )
-            .then(response => response.json())
-            .then(this.getEmployees)
-            .catch(err => console.log(err))
+        this.state.store.deleteEmployee(employee);
     }
 
     onEmployeeFirstNameChange = (event) => {
-        this.setState({
-            employee: {
-                ...this.state.employee,
-                firstname: event.target.value
-            }
-        });
+        const firstname = event.target.value;
+        this.state.store.setEmployeeFirstName(firstname);
     }
 
     onEmployeeLastNameChange = (event) => {
-        this.setState({
-            employee: {
-                ...this.state.employee,
-                lastname: event.target.value
-            }
-        });
+        const lastname = event.target.value;
+        this.state.store.setEmployeeLastName(lastname);
     }
 
     onEmployeeProjectSelect = (event) => {
-        this.setState({
-            selectedProject:  event.target.value,
-            employee: {
-                ...this.state.employee,
-                project: event.target.value 
-            },
-        });
+        const selectedProject = event.target.value;
+        this.state.AppStore.setSelectedProject(selectedProject);
     }
 
     getEmployeesFromSelectedProject = () => {
@@ -131,7 +85,8 @@ class Employees extends Component {
     }
 
     render() {
-        const {employees, employee, selectedProject, employeeHeaders, projects, emptyEmployee} = this.state;
+        const {employees, projects, employee, selectedProject, emptyEmployee} = this.state.AppStore;
+        const {employeeHeaders} = this.state;
         return(
             <Grid>
                 <Row className="Employees">
@@ -146,23 +101,23 @@ class Employees extends Component {
                         <FormGroup
                             controlId="formBasicText"
                             >
-                            <ControlLabel>Add Employee</ControlLabel>
+                            <ControlLabel>{M.addEmployee}</ControlLabel>
                             <FormControl
                                 type="text"
-                                value={employee.name}
-                                placeholder="Enter employee First name"
+                                value={employee.firstname}
+                                placeholder={M.firstnamePlaceholder}
                                 onChange={this.onEmployeeFirstNameChange}
                             />
                             <FormControl
                                 type="text"
-                                value={employee.name}
-                                placeholder="Enter employee Last name"
+                                value={employee.lastname}
+                                placeholder={M.lastnamePlaceholder}
                                 onChange={this.onEmployeeLastNameChange}
                             />
-                            <ControlLabel>Select Project</ControlLabel>
+                            <ControlLabel>{M.selectProject}</ControlLabel>
                             <FormControl
                                 componentClass="select"
-                                placeholder="select employee's project"
+                                placeholder={M.selectProjectPlaceholder}
                                 onChange={this.onEmployeeProjectSelect}
                                 value={this.state.selectedProject}
                             >
@@ -174,8 +129,9 @@ class Employees extends Component {
                                 </option>
                                 )}
                             </FormControl> 
-                            {emptyEmployee &&
-                                <HelpBlock>{M.emptyEmployee}</HelpBlock>
+                            {emptyProject || isEmployeeNonUnique &&
+                                <HelpBlock>{emptyEmployee ? M.emptyEmployee :
+                                    M.nonUniqueEmployee}</HelpBlock>
                             }
                         </FormGroup>
                         <Button onClick={this.onAddEmployeeClick} >Add</Button>
