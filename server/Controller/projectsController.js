@@ -48,6 +48,7 @@ class ProjectsController {
                     console.log(err);
                     return res.send(err);
                 }
+                return res.send({});
                 console.log(`Project '${project_name}' successfully deleted from Projects`);
            })
        });

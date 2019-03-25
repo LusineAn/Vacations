@@ -97,7 +97,7 @@ class Employees extends Component {
         const {employeeHeaders, firstname, lastname, selectedProject} = this.state;
         return(
             <Grid>
-                <Row className="Employees">
+                <Row className="employees">
                     <Col className="employees-list" sm={6}>
                         <DataTable
                             className="Employees-table"
