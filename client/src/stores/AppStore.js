@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import {extendObservable, action, computed} from 'mobx';
+import {extendObservable, action, computed, runInAction} from 'mobx';
 // import _ from 'lodash';
 
 class AppStore {
@@ -18,9 +18,20 @@ class AppStore {
             emptyProject: false,
             emptyEmployee: false,
             isProjectNonUnique: true,
-            isEmployeeNonUnique: false
+            isEmployeeNonUnique: false,
+            employee: {
+                firstname: '',
+                lastname: '',
+                vacation_start: '',
+                vacation_end: '',
+                project: ''
+            },
         };
     };
+
+    print() {
+        console.log("aaa");
+    }
 
     @action
     setProject(project) {
@@ -40,17 +51,6 @@ class AppStore {
     @action
     setEmployeeLastName(lastname) {
         this.employee.lastname = lastname;
-    }
-
-    validateEmployee(firstname, lastname) {
-        this.isEmployeeUnique = !this.employees.map(employee => {
-            employee.firstname === firstname && employee.lastname === lastname
-        });
-        if(isProjectUnique) {
-            this.project = project;
-        } else {
-            return
-        }
     }
 
     @action
@@ -73,7 +73,7 @@ class AppStore {
 
         const url = `http://localhost:8081/projects/add?project_name=${project.name}`;
         fetch(url, {method: "POST"})
-            .then(this.getProjects)
+            .then(this.getProjects())
             .catch(err => console.log(err));
         
         this.emptyProject = false;
@@ -85,28 +85,30 @@ class AppStore {
         const url = `http://localhost:8081/projects/delete?project_name=${project.name}`;
         fetch(url, {method: "DELETE"})
             .then(response => response.json())
-            .then(this.getProjects)
+            .then(this.getProjects())
             .catch(err => console.log(err));
         this.project = '';
     }
 
+    @action
     addEmployee(newEmployee, selectedProject) {
         const {firstname, lastname} = newEmployee;
         if(firstname.length === 0 || lastname.length === 0 || selectedProject.length === 0) {
             this.emptyEmployee = true
             return;
         }
-        this.isEmployeeNonUnique = this.employees.map(employee => {
+        this.isEmployeeNonUnique = this.employees.filter(employee => {
             employee.firstname === firstname && employee.lastname === lastname
         });
-        if(isEmployeeNonUnique) {
+        if(!!this.isEmployeeNonUnique.length) {
             return;
         }
 
-        const url = `http://localhost:8081/employees/add?firstname=${employee.firstname}&lastname=${employee.lastname}&project=${selectedProject}`;
+        const url = `http://localhost:8081/employees/add?firstname=${firstname}&lastname=${lastname}&project=${selectedProject}`;
         fetch(url, {method: "POST"} )
             .then(response => response.json())
-            .then(this.getEmployees)
+            // .then(() => {runInAction(() => this.loadData())})
+            .then(() => {() => this.loadData()})
             .catch(err => console.log(err));
         
         this.emptyEmployee = false;
@@ -118,9 +120,15 @@ class AppStore {
         const url = `http://localhost:8081/employees/delete?firstname=${employee.firstname}&lastname=${employee.lastname}`;
         fetch(url, {method: "DELETE"})
             .then(response => response.json())
-            .then(this.getEmployees)
+            .then(() => this.employees = this.getEmployees)
             .catch(err => console.log(err))
     }
+
+    @action
+    loadData = async () => {
+        this.projects = await this.getProjects;
+        this.employees = await this.getEmployees;
+    };
 
     @computed
     get getProjects() {
@@ -128,21 +136,59 @@ class AppStore {
         return new Promise((resolve, reject) => {
             return fetch(url)
                 .then(response => response.json())
-                .then(({data}) => this.projects = data)
+                .then(({data}) => {return resolve(data)})
+                .catch(err => resolve(err));
+        });
+    }
+    
+    @computed
+    get getEmployees() {
+        const url = 'http://localhost:8081/employees';
+        return new Promise((resolve, reject) => {
+            return fetch(url)
+                .then(response => response.json())
+                .then(({data}) => {return resolve(data)})
                 .catch(err => resolve(err));
         });
     }
 
-    @computed
-    // get getEmployees = () => {
-    get getEmployees() {
-        console.log("getEmployees88888888888");
-        const url = 'http://localhost:8081/employees';
-        fetch(url)
-            .then(response => response.json())
-            .then(({data}) => this.employees = data)
-            .catch(err => console.log(err))
-    }
+    // @computed
+    // get getProjects() {
+    //     const url = 'http://localhost:8081/projects';
+    //     return fetch(url)
+    //         .then(response => response.json())
+    //         // .then(({data}) => this.projects = data)
+    //         .catch(err => resolve(err))
+    // }
+
+    // @computed
+    // // get getEmployees = () => {
+    // get getEmployees() {
+    //     console.log("getEmployees88888888888");
+    //     const url = 'http://localhost:8081/employees';
+    //     return fetch(url)
+    //         .then(response => response.json())
+    //         // .then(({data}) => this.employees = data)
+    //         .catch(err => console.log(err))
+    // }
+
+    // @computed
+    // get getEmployeesList() {
+    //     this.employees = this.getEmployees();
+    // }
+    // @computed
+    // get getProjectsList() {
+    //     this.projects = this.getProjects();
+    // }
+
+
+
+//************NAYEL*********/
+    // getApiUrl() {
+    //     const {tz, msg} = this.state;
+    //     const host = 'http://localhost:8081';
+    //     return host + '/' + tz + '/' + msg + '.json';
+    // }
 }
 
 export {AppStore};

@@ -9,7 +9,7 @@ class AppStore {
 
     getDefaultStoreProps() {
         return {
-            // assets: Immutable.List(),
+            assets: Immutable.List(),
             // selectedAsset: Immutable.Map(),
             // assetsForDeletion: Immutable.List(),
             // filterType: ASSET_MANAGER.ASSET_TYPES.ALL,
@@ -62,18 +62,18 @@ class AppStore {
 //         this.selectedAsset = asset;
 //     }
 
-//     @action
-//     loadData = async () => {
-//         // don't send request if user doesn't have permission
-//         if (!User.canAssetsView) {
-//             return true;
-//         }
+    @action
+    loadData = async () => {
+        // don't send request if user doesn't have permission
+        if (!User.canAssetsView) {
+            return true;
+        }
 
-//         await this.loadAccountUsageStats();
+        await this.loadAccountUsageStats();
 
-//         const assets = await AssetsDAO.getAll();
-//         this.assets = Immutable.fromJS(this.processAssetsResponse(assets));
-//     };
+        const assets = await AssetsDAO.getAll();
+        this.assets = Immutable.fromJS(this.processAssetsResponse(assets));
+    };
 
 //     @action
 //     loadAccountUsageStats = async () => {

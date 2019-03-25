@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import {observer} from "mobx-react";
+import PropTypes from 'prop-types';
+import {decorate, observable} from "mobx";
 
 import {Grid, Row, Col, Button, Form, FormGroup, FormControl, ControlLabel, HelpBlock} from 'react-bootstrap';
 import DataTable from "../ReactComponents/DataTable/DataTable";
@@ -10,35 +12,29 @@ import M from '../../Messages/messages';
 
 @observer
 class Projects extends Component {
-    constructor() {
-        super();
-        this.state = {
-            AppStore: new AppStore()
-        }
-    }
-
-    componentDidMount() {
-        this.state.AppStore.getProjects();
-    }
+    
+    static propTypes = {
+        appStore: PropTypes.any
+    };
 
     onAddProjectClick = () => {
-        const store = this.state.AppStore;
+        const store = this.props.appStore;
         store.addProject(store.project);
     }
 
     onDeleteProjectClick = () => {
-        const store = this.state.AppStore;
+        const store = this.props.appStore;
         store.deleteProject(store.project);
     }
 
     onProjectNameChange = (event) => {
         const projectName = event.target.value;
-        this.state.AppStore.setProject(projectName);
+        this.props.appStore.setProject(projectName);
     }
 
     render() {
-        const {projects, project, emptyProject, isProjectUnique} = this.state.AppStore;
-        const headers = ['number', 'Project Name'];
+        const {projects, project, emptyProject, isProjectUnique} = this.props.appStore;
+        const projectHeaders = ['Project Name'];
 
         return(
             <Grid>
@@ -46,7 +42,7 @@ class Projects extends Component {
                     <Col className="Projects-list" sm={6}>
                         <DataTable
                             className="Projects-list123"
-                            headers={headers}
+                            headers={projectHeaders}
                             items={projects}
                         />
                     </Col>
