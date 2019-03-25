@@ -58,7 +58,8 @@ class Employees extends Component {
     }
 
     onDeleteEmployeeClick = () => {
-        const {employee} = this.state;
+        const employee = {firstname: this.state.firstname,
+            lastname: this.state.lastname};
         this.props.appStore.deleteEmployee(employee);
     }
 

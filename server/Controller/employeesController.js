@@ -45,6 +45,7 @@ class EmployeesController {
                     return res.send(err);
                 }
                 console.log("Inserted into VACATIONS!!!");
+                return res.send({});
             });
         });
     };
@@ -72,6 +73,7 @@ class EmployeesController {
                     return res.send(err);
                 }
                 console.log(`Project '${firstname} ${lastname}' successfully deleted from Employees`);
+                return res.send({});
            })
        })
     };

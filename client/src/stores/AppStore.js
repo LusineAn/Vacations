@@ -29,9 +29,39 @@ class AppStore {
         };
     };
 
-    print() {
-        console.log("aaa");
+    @action
+    loadData = async () => {
+        await this.loadProjects();
+        await this.loadEmployees();
+    };
+
+    @action
+    loadProjects = () => {
+        const url = 'http://localhost:8081/projects';
+        fetch(url)
+            .then(response => response.json())
+            .then(({data}) => this.setProjects(data))
+            .catch(err => resolve(err));
     }
+
+    @action
+    loadEmployees = () => {
+        const url = 'http://localhost:8081/employees';
+        fetch(url)
+            .then(response => response.json())
+            .then(({data}) => this.setEmployees(data))
+            .catch(err => resolve(err));
+    }
+
+    @action
+    setProjects = (projects) => {
+        this.projects = projects;
+    };
+
+    @action
+    setEmployees = (employees) => {
+        this.employees = employees;
+    };
 
     @action
     setProject(project) {
@@ -60,6 +90,7 @@ class AppStore {
         this.lastname = '';
     }
 
+    @action
     addProject(newProject) {
         const projectName = newProject.name;
         if(projectName.length === 0) {
@@ -73,7 +104,8 @@ class AppStore {
 
         const url = `http://localhost:8081/projects/add?project_name=${project.name}`;
         fetch(url, {method: "POST"})
-            .then(this.getProjects())
+            .then(response => response.json())
+            .then(() => {this.loadData()})
             .catch(err => console.log(err));
         
         this.emptyProject = false;
@@ -81,11 +113,12 @@ class AppStore {
         this.project = '';
     }
 
+    @action
     deleteProject(project) {
         const url = `http://localhost:8081/projects/delete?project_name=${project.name}`;
         fetch(url, {method: "DELETE"})
             .then(response => response.json())
-            .then(this.getProjects())
+            .then(() => {this.loadData()})
             .catch(err => console.log(err));
         this.project = '';
     }
@@ -106,81 +139,25 @@ class AppStore {
 
         const url = `http://localhost:8081/employees/add?firstname=${firstname}&lastname=${lastname}&project=${selectedProject}`;
         fetch(url, {method: "POST"} )
-            .then(response => response.json())
+            .then(response => {
+                return response.json()})
             // .then(() => {runInAction(() => this.loadData())})
-            .then(() => {() => this.loadData()})
-            .catch(err => console.log(err));
+                .then(() => {this.loadData()})
+                .catch(err => console.log(err));
         
         this.emptyEmployee = false;
         this.isEmployeeNonUnique = false;
         this.resetData();
     }
 
+    @action
     deleteEmployee(employee) {
         const url = `http://localhost:8081/employees/delete?firstname=${employee.firstname}&lastname=${employee.lastname}`;
         fetch(url, {method: "DELETE"})
             .then(response => response.json())
-            .then(() => this.employees = this.getEmployees)
+            .then(() => {this.loadData()})
             .catch(err => console.log(err))
     }
-
-    @action
-    loadData = async () => {
-        this.projects = await this.getProjects;
-        this.employees = await this.getEmployees;
-    };
-
-    @computed
-    get getProjects() {
-        const url = 'http://localhost:8081/projects';
-        return new Promise((resolve, reject) => {
-            return fetch(url)
-                .then(response => response.json())
-                .then(({data}) => {return resolve(data)})
-                .catch(err => resolve(err));
-        });
-    }
-    
-    @computed
-    get getEmployees() {
-        const url = 'http://localhost:8081/employees';
-        return new Promise((resolve, reject) => {
-            return fetch(url)
-                .then(response => response.json())
-                .then(({data}) => {return resolve(data)})
-                .catch(err => resolve(err));
-        });
-    }
-
-    // @computed
-    // get getProjects() {
-    //     const url = 'http://localhost:8081/projects';
-    //     return fetch(url)
-    //         .then(response => response.json())
-    //         // .then(({data}) => this.projects = data)
-    //         .catch(err => resolve(err))
-    // }
-
-    // @computed
-    // // get getEmployees = () => {
-    // get getEmployees() {
-    //     console.log("getEmployees88888888888");
-    //     const url = 'http://localhost:8081/employees';
-    //     return fetch(url)
-    //         .then(response => response.json())
-    //         // .then(({data}) => this.employees = data)
-    //         .catch(err => console.log(err))
-    // }
-
-    // @computed
-    // get getEmployeesList() {
-    //     this.employees = this.getEmployees();
-    // }
-    // @computed
-    // get getProjectsList() {
-    //     this.projects = this.getProjects();
-    // }
-
 
 
 //************NAYEL*********/
