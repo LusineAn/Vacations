@@ -18,7 +18,7 @@ class AppStore {
             emptyProject: false,
             emptyEmployee: false,
             isProjectNonUnique: false,
-            isEmployeeUnique: false,
+            isEmployeeNonUnique: false,
             employee: {
                 firstname: '',
                 lastname: '',
@@ -50,7 +50,8 @@ class AppStore {
         fetch(url)
             .then(response => {
                 return response.json()})
-            .then(({data}) => this.setEmployees(data))
+            .then(({data}) => {
+                return this.setEmployees(data)})
             .catch(err => resolve(err));
     }
 
@@ -90,23 +91,24 @@ class AppStore {
         this.firstname = '';
         this.lastname = '';
         this.emptyEmployee = false;
-        this.isEmployeeUnique = false;
+        this.isEmployeeNonUnique = false;
     }
 
     @action
     addEmployee() {
         const {firstname, lastname} = this.employee;
         const selectedProject = this.selectedProject;
-        console.log(toJS(this.employees));
-        const employees = this.employees;
+        this.emptyEmployee = false;
+        this.isEmployeeNonUnique = false;
+
         if(firstname.length === 0 || lastname.length === 0 || selectedProject.length === 0) {
             this.emptyEmployee = true
             return;
         }
-        this.isEmployeeUnique = this.employees.find(employee => {
-            employee.firstname === firstname && employee.lastname === lastname
+        this.isEmployeeNonUnique = !!this.employees.find(employee => {
+            return (employee.firstname === firstname && employee.lastname === lastname)
         });
-        if(this.isEmployeeUnique.length > 0) {
+        if(this.isEmployeeNonUnique) {
             return;
         }
 

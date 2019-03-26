@@ -45,7 +45,7 @@ class Employees extends Component {
     }
 
     render() {
-        const {projects, employees, employee, selectedProject, emptyEmployee, isEmployeeUnique} = this.props.appStore;
+        const {projects, employees, employee, selectedProject, emptyEmployee, isEmployeeNonUnique} = this.props.appStore;
         const {employeeHeaders} = this.state;
         return(
             <Grid>
@@ -92,7 +92,7 @@ class Employees extends Component {
                             {emptyEmployee &&
                                 <HelpBlock>{M.emptyEmployee}</HelpBlock>
                             }
-                            {isEmployeeUnique &&
+                            {isEmployeeNonUnique &&
                                 <HelpBlock>{M.nonUniqueEmployee}</HelpBlock>
                             }
                         </FormGroup>
