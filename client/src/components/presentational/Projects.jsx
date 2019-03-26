@@ -64,7 +64,7 @@ class Projects extends Component {
                                 <Button onClick={this.onAddProjectClick}>Add</Button>
                             </Form>
                             <FormControl.Feedback />
-                            {emptyProject || isProjectNonUnique &&
+                            {(emptyProject || isProjectNonUnique) &&
                                 <HelpBlock>{emptyProject ? M.emptyProject :
                                     M.nonUniqueProject}</HelpBlock>
                             }

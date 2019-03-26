@@ -158,7 +158,7 @@ class AppStore {
         const url = `http://localhost:8081/projects/delete?project_name=${projectName}`;
         fetch(url, {method: "DELETE"})
             .then(response => response.json())
-            .then(() => {this.loadData()})
+            .then(() => {this.loadProjects()})
             .then(() => this.resetProjectData())
             .catch(err => console.log(err));
     }
@@ -169,7 +169,7 @@ class AppStore {
         const url = `http://localhost:8081/employees/delete?firstname=${firstname}&lastname=${lastname}`;
         fetch(url, {method: "DELETE"})
             .then(response => response.json())
-            .then(() => {this.loadData()})
+            .then(() => {this.loadEmployees()})
             .then(() => this.resetEmployeeData())
             .catch(err => console.log(err))
     }
