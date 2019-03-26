@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import {extendObservable, action, computed, runInAction} from 'mobx';
+import {extendObservable, action, computed, runInAction, toJS} from 'mobx';
 // import _ from 'lodash';
 
 class AppStore {
@@ -11,14 +11,14 @@ class AppStore {
     getDefaultStoreProps() {
         return {
             projects: Immutable.List(),
-            selectedProject: Immutable.Map(),
+            selectedProject: '',
             project: Immutable.Map(),
             employees: Immutable.List(),
             selectedEmployee: Immutable.Map(),
             emptyProject: false,
             emptyEmployee: false,
-            isProjectNonUnique: true,
-            isEmployeeNonUnique: false,
+            isProjectNonUnique: false,
+            isEmployeeUnique: false,
             employee: {
                 firstname: '',
                 lastname: '',
@@ -48,7 +48,8 @@ class AppStore {
     loadEmployees = () => {
         const url = 'http://localhost:8081/employees';
         fetch(url)
-            .then(response => response.json())
+            .then(response => {
+                return response.json()})
             .then(({data}) => this.setEmployees(data))
             .catch(err => resolve(err));
     }
@@ -88,6 +89,44 @@ class AppStore {
         this.selectedProject = '';
         this.firstname = '';
         this.lastname = '';
+        this.emptyEmployee = false;
+        this.isEmployeeUnique = false;
+    }
+
+    @action
+    addEmployee() {
+        const {firstname, lastname} = this.employee;
+        const selectedProject = this.selectedProject;
+        console.log(toJS(this.employees));
+        const employees = this.employees;
+        if(firstname.length === 0 || lastname.length === 0 || selectedProject.length === 0) {
+            this.emptyEmployee = true
+            return;
+        }
+        this.isEmployeeUnique = this.employees.find(employee => {
+            employee.firstname === firstname && employee.lastname === lastname
+        });
+        if(this.isEmployeeUnique.length > 0) {
+            return;
+        }
+
+        const url = `http://localhost:8081/employees/add?firstname=${firstname}&lastname=${lastname}&project=${selectedProject}`;
+        fetch(url, {method: "POST"} )
+            .then(response => {
+                return response.json()})
+                .then(() => this.loadData())
+                .then(() => this.resetData())
+                .catch(err => console.log(err));
+    }
+
+    @action
+    deleteEmployee() {
+        const {firstname, lastname} = this.employee;
+        const url = `http://localhost:8081/employees/delete?firstname=${firstname}&lastname=${lastname}`;
+        fetch(url, {method: "DELETE"})
+            .then(response => response.json())
+            .then(() => {this.loadData()})
+            .catch(err => console.log(err))
     }
 
     @action
@@ -122,50 +161,6 @@ class AppStore {
             .catch(err => console.log(err));
         this.project = '';
     }
-
-    @action
-    addEmployee(newEmployee, selectedProject) {
-        const {firstname, lastname} = newEmployee;
-        if(firstname.length === 0 || lastname.length === 0 || selectedProject.length === 0) {
-            this.emptyEmployee = true
-            return;
-        }
-        this.isEmployeeNonUnique = this.employees.filter(employee => {
-            employee.firstname === firstname && employee.lastname === lastname
-        });
-        if(!!this.isEmployeeNonUnique.length) {
-            return;
-        }
-
-        const url = `http://localhost:8081/employees/add?firstname=${firstname}&lastname=${lastname}&project=${selectedProject}`;
-        fetch(url, {method: "POST"} )
-            .then(response => {
-                return response.json()})
-            // .then(() => {runInAction(() => this.loadData())})
-                .then(() => {this.loadData()})
-                .catch(err => console.log(err));
-        
-        this.emptyEmployee = false;
-        this.isEmployeeNonUnique = false;
-        this.resetData();
-    }
-
-    @action
-    deleteEmployee(employee) {
-        const url = `http://localhost:8081/employees/delete?firstname=${employee.firstname}&lastname=${employee.lastname}`;
-        fetch(url, {method: "DELETE"})
-            .then(response => response.json())
-            .then(() => {this.loadData()})
-            .catch(err => console.log(err))
-    }
-
-
-//************NAYEL*********/
-    // getApiUrl() {
-    //     const {tz, msg} = this.state;
-    //     const host = 'http://localhost:8081';
-    //     return host + '/' + tz + '/' + msg + '.json';
-    // }
 }
 
 export {AppStore};

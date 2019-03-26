@@ -45,6 +45,8 @@ class EmployeesController {
                     return res.send(err);
                 }
                 console.log("Inserted into VACATIONS!!!");
+                const vacationId = results.insertId;
+                console.log('vacationId:' + vacationId);
                 return res.send({});
             });
         });

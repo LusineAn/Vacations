@@ -1,13 +1,9 @@
 import React, {Component} from "react";
 import {observer} from "mobx-react";
 import PropTypes from 'prop-types';
-import Immutable from 'immutable';
-import {decorate, observable} from "mobx";
 
 import {Grid, Row, Col, Button, FormGroup, FormControl, ControlLabel, HelpBlock} from 'react-bootstrap';
 import DataTable from "../ReactComponents/DataTable/DataTable";
-
-import {AppStore} from '../../stores/AppStore';
 
 import M from "../../Messages/messages";
 
@@ -21,80 +17,36 @@ class Employees extends Component {
     constructor() {
         super();
         this.state = {
-            firstname: '',
-            lastname: '',
-            selectedProject: '',
-            employees: [],
-            employee: {
-                firstname: '',
-                lastname: '',
-                vacation_start: '',
-                vacation_end: '',
-                project: ''
-            },
             employeeHeaders: ['First Name', 'Last Name', 'Project'],
-            // projects: this.props.appStore.projects,
-            emptyEmployee: false
         }
     }
 
-    // getProjects = async() => {
-    //     const url = 'http://localhost:8081/projects';
-    //     return new Promise((resolve, reject) => {
-    //         return fetch(url)
-    //             .then(response => response.json())
-    //             .then(({data}) => this.setState({projects: data}, () => {
-    //                 return resolve(data);
-    //             }))
-    //             .catch(err => resolve(err));
-    //     });
-    // }
-
-    onAddEmployeeClick = () => {
-        const employee = {firstname: this.state.firstname,
-        lastname: this.state.lastname};
-        const selectedProject = this.state.selectedProject;
-        this.props.appStore.addEmployee(employee, selectedProject);
-    }
-
-    onDeleteEmployeeClick = () => {
-        const employee = {firstname: this.state.firstname,
-            lastname: this.state.lastname};
-        this.props.appStore.deleteEmployee(employee);
-    }
-
     onEmployeeFirstNameChange = (event) => {
-        this.setState({
-            firstname: event.target.value
-        })
-        // const firstname = event.target.value;
-        // this.props.appStore.setEmployeeFirstName(firstname);
+        const firstname = event.target.value;
+        this.props.appStore.setEmployeeFirstName(firstname);
     }
 
     onEmployeeLastNameChange = (event) => {
-        this.setState({
-            lastname: event.target.value
-        });
-        // const lastname = event.target.value;
-        // this.props.appStore.setEmployeeLastName(lastname);
+        const lastname = event.target.value;
+        this.props.appStore.setEmployeeLastName(lastname);
     }
 
     onEmployeeProjectSelect = (event) => {
-        this.setState({
-            selectedProject: event.target.value
-        });
-        // const selectedProject = event.target.value;
-        // this.props.appStore.setSelectedProject(selectedProject);
+        const selectedProject = event.target.value;
+        this.props.appStore.setSelectedProject(selectedProject);
     }
 
-    getEmployeesFromSelectedProject = () => {
+    onAddEmployeeClick = () => {
+        this.props.appStore.addEmployee();
+    }
 
+    onDeleteEmployeeClick = () => {
+        this.props.appStore.deleteEmployee();
     }
 
     render() {
-        const {employees, projects, employee, 
-            emptyEmployee, isEmployeeNonUnique} = this.props.appStore;
-        const {employeeHeaders, firstname, lastname, selectedProject} = this.state;
+        const {projects, employees, employee, selectedProject, emptyEmployee, isEmployeeUnique} = this.props.appStore;
+        const {employeeHeaders} = this.state;
         return(
             <Grid>
                 <Row className="employees">
@@ -112,13 +64,13 @@ class Employees extends Component {
                             <ControlLabel>{M.addEmployee}</ControlLabel>
                             <FormControl
                                 type="text"
-                                value={firstname}
+                                value={employee.firstname}
                                 placeholder={M.firstnamePlaceholder}
                                 onChange={this.onEmployeeFirstNameChange}
                             />
                             <FormControl
                                 type="text"
-                                value={lastname}
+                                value={employee.lastname}
                                 placeholder={M.lastnamePlaceholder}
                                 onChange={this.onEmployeeLastNameChange}
                             />
@@ -136,10 +88,12 @@ class Employees extends Component {
                                     {project.name}
                                 </option>
                                 )}
-                            </FormControl> 
-                            {emptyEmployee || isEmployeeNonUnique &&
-                                <HelpBlock>{emptyEmployee ? M.emptyEmployee :
-                                    M.nonUniqueEmployee}</HelpBlock>
+                            </FormControl>
+                            {emptyEmployee &&
+                                <HelpBlock>{M.emptyEmployee}</HelpBlock>
+                            }
+                            {isEmployeeUnique &&
+                                <HelpBlock>{M.nonUniqueEmployee}</HelpBlock>
                             }
                         </FormGroup>
                         <Button onClick={this.onAddEmployeeClick} >Add</Button>

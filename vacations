@@ -24,16 +24,8 @@ https://www.digitalocean.com/community/tutorials/how-to-install-the-latest-mysql
     		id Integer Unsigned Auto_Increment Primary Key,
     		name VARCHAR(300) NOT NULL
     	);
-
-	CREATE TABLE vacations (
-		project_id INTEGER Unsigned NOT NULL,
-	    employee_id INTEGER Unsigned NOT NULL,
-		start_date DATE,
-		end_date DATE,
-	    PRIMARY KEY (project_id, employee_id),
-	    FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE RESTRICT ON UPDATE CASCADE,
-	    FOREIGN KEY (employee_id) REFERENCES employees (id) ON DELETE RESTRICT ON UPDATE CASCADE
-	);
+//Create Vacations table
+	CREATE TABLE vacations (id Integer Unsigned Auto_Increment, project_id INTEGER Unsigned NOT NULL, employee_id INTEGER Unsigned NOT NULL, start_date DATE, end_date DATE, PRIMARY KEY (id, project_id, employee_id), FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE RESTRICT ON UPDATE CASCADE, FOREIGN KEY (employee_id) REFERENCES employees (id) ON DELETE RESTRICT ON UPDATE CASCADE);
 
 7. List tables: show tables;
 
