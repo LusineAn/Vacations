@@ -25,7 +25,7 @@ class ProjectsController {
                 return res.send(err);
             }
             console.log(`Project '${project_name}' successfully added`);
-            return res.send(`Project '${project_name}' successfully added`);
+            return res.send({});
         })
     };
     
@@ -48,8 +48,8 @@ class ProjectsController {
                     console.log(err);
                     return res.send(err);
                 }
-                return res.send({});
                 console.log(`Project '${project_name}' successfully deleted from Projects`);
+                return res.send({});
            })
        });
     };

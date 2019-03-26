@@ -16,6 +16,7 @@ let messages = {
     nonUniqueEmployee: '* Emlpoyee with that first name and last name is already exist!',
     emptyProject: `* You must fill project's name!`,
     nonUniqueProject: '* Project with that name is already exist!',
+    projectNamePlaceholder: 'Enter project name',
     firstnamePlaceholder: 'Enter employee First name',
     lastnamePlaceholder: 'Enter employee Last name',
     selectProjectPlaceholder: `Select employee's project`

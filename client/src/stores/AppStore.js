@@ -11,14 +11,10 @@ class AppStore {
     getDefaultStoreProps() {
         return {
             projects: Immutable.List(),
-            selectedProject: '',
-            project: Immutable.Map(),
             employees: Immutable.List(),
-            selectedEmployee: Immutable.Map(),
-            emptyProject: false,
-            emptyEmployee: false,
-            isProjectNonUnique: false,
-            isEmployeeNonUnique: false,
+            project: {
+                name: ''
+            },
             employee: {
                 firstname: '',
                 lastname: '',
@@ -26,6 +22,11 @@ class AppStore {
                 vacation_end: '',
                 project: ''
             },
+            selectedProject: '',
+            emptyProject: false,
+            emptyEmployee: false,
+            isProjectNonUnique: false,
+            isEmployeeNonUnique: false
         };
     };
 
@@ -48,10 +49,8 @@ class AppStore {
     loadEmployees = () => {
         const url = 'http://localhost:8081/employees';
         fetch(url)
-            .then(response => {
-                return response.json()})
-            .then(({data}) => {
-                return this.setEmployees(data)})
+            .then(response => response.json())
+            .then(({data}) => this.setEmployees(data))
             .catch(err => resolve(err));
     }
 
@@ -66,8 +65,8 @@ class AppStore {
     };
 
     @action
-    setProject(project) {
-        this.project = project;
+    setProject(projectName) {
+        this.project.name = projectName;
     }
 
     @action
@@ -86,22 +85,53 @@ class AppStore {
     }
 
     @action
-    resetData() {
+    resetProjectData() {
+        this.project.name = '';
+    }
+
+    @action
+    resetEmployeeData() {
         this.selectedProject = '';
-        this.firstname = '';
-        this.lastname = '';
-        this.emptyEmployee = false;
-        this.isEmployeeNonUnique = false;
+        this.employee.firstname = '';
+        this.employee.lastname = '';
+    }
+
+    @action
+    addProject() {
+        this.emptyProject = false;
+        this.isProjectNonUnique = false;
+
+        const projectName = this.project.name;
+        if(projectName.trim().length === 0) {
+            this.emptyProject = true
+            return;
+        }
+
+        this.isProjectNonUnique = !!this.projects.find(project => {
+            return project.name === projectName
+        });
+        if(this.isProjectNonUnique) {
+            return;
+        }
+
+        const url = `http://localhost:8081/projects/add?project_name=${projectName}`;
+        fetch(url, {method: "POST"})
+            .then(response => {return response.json()})
+            .then(() => {this.loadProjects()})
+            .then(() => this.resetProjectData())
+            .catch(err => console.log(err));
     }
 
     @action
     addEmployee() {
-        const {firstname, lastname} = this.employee;
-        const selectedProject = this.selectedProject;
         this.emptyEmployee = false;
         this.isEmployeeNonUnique = false;
 
-        if(firstname.length === 0 || lastname.length === 0 || selectedProject.length === 0) {
+        const {firstname, lastname} = this.employee;
+        const selectedProject = this.selectedProject;
+
+        if(firstname.trim().length === 0 ||
+        lastname.trim().length === 0 || selectedProject.length === 0) {
             this.emptyEmployee = true
             return;
         }
@@ -112,13 +142,25 @@ class AppStore {
             return;
         }
 
-        const url = `http://localhost:8081/employees/add?firstname=${firstname}&lastname=${lastname}&project=${selectedProject}`;
+        const url = `http://localhost:8081/employees/add?firstname=${firstname}
+                    &lastname=${lastname}&project=${selectedProject}`;
         fetch(url, {method: "POST"} )
             .then(response => {
                 return response.json()})
-                .then(() => this.loadData())
-                .then(() => this.resetData())
+                .then(() => this.loadEmployees())
+                .then(() => this.resetEmployeeData())
                 .catch(err => console.log(err));
+    }
+
+    @action
+    deleteProject() {
+        const projectName = this.project.name;
+        const url = `http://localhost:8081/projects/delete?project_name=${projectName}`;
+        fetch(url, {method: "DELETE"})
+            .then(response => response.json())
+            .then(() => {this.loadData()})
+            .then(() => this.resetProjectData())
+            .catch(err => console.log(err));
     }
 
     @action
@@ -128,40 +170,8 @@ class AppStore {
         fetch(url, {method: "DELETE"})
             .then(response => response.json())
             .then(() => {this.loadData()})
+            .then(() => this.resetEmployeeData())
             .catch(err => console.log(err))
-    }
-
-    @action
-    addProject(newProject) {
-        const projectName = newProject.name;
-        if(projectName.length === 0) {
-            this.emptyProject = true
-            return;
-        }
-        this.isProjectNonUnique = this.projects.map(project => project.name = projectName);
-        if(isProjectNonUnique) {
-            return;
-        }
-
-        const url = `http://localhost:8081/projects/add?project_name=${project.name}`;
-        fetch(url, {method: "POST"})
-            .then(response => response.json())
-            .then(() => {this.loadData()})
-            .catch(err => console.log(err));
-        
-        this.emptyProject = false;
-        this.isProjectNonUnique = false;
-        this.project = '';
-    }
-
-    @action
-    deleteProject(project) {
-        const url = `http://localhost:8081/projects/delete?project_name=${project.name}`;
-        fetch(url, {method: "DELETE"})
-            .then(response => response.json())
-            .then(() => {this.loadData()})
-            .catch(err => console.log(err));
-        this.project = '';
     }
 }
 

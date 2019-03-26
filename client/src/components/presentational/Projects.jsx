@@ -17,14 +17,11 @@ class Projects extends Component {
         appStore: PropTypes.any
     };
 
-    onAddProjectClick = () => {
-        const store = this.props.appStore;
-        store.addProject(store.project);
-    }
-
-    onDeleteProjectClick = () => {
-        const store = this.props.appStore;
-        store.deleteProject(store.project);
+    constructor() {
+        super();
+        this.state = {
+            projecteHeaders: ['Project Name'],
+        }
     }
 
     onProjectNameChange = (event) => {
@@ -32,8 +29,16 @@ class Projects extends Component {
         this.props.appStore.setProject(projectName);
     }
 
+    onAddProjectClick = () => {
+        this.props.appStore.addProject();
+    }
+
+    onDeleteProjectClick = () => {
+        this.props.appStore.deleteProject();
+    }
+
     render() {
-        const {projects, project, emptyProject, isProjectUnique} = this.props.appStore;
+        const {projects, project, emptyProject, isProjectNonUnique} = this.props.appStore;
         const projectHeaders = ['Project Name'];
 
         return(
@@ -41,7 +46,7 @@ class Projects extends Component {
                 <Row className="Projects">
                     <Col className="Projects-list" sm={6}>
                         <DataTable
-                            className="Projects-list123"
+                            className="Projects-list"
                             headers={projectHeaders}
                             items={projects}
                         />
@@ -53,13 +58,13 @@ class Projects extends Component {
                                 <FormControl
                                     type="text"
                                     value={project.name}
-                                    placeholder="Enter project name"
+                                    placeholder={M.projectNamePlaceholder}
                                     onChange={this.onProjectNameChange}
                                 />
                                 <Button onClick={this.onAddProjectClick}>Add</Button>
                             </Form>
                             <FormControl.Feedback />
-                            {emptyProject || !isProjectUnique &&
+                            {emptyProject || isProjectNonUnique &&
                                 <HelpBlock>{emptyProject ? M.emptyProject :
                                     M.nonUniqueProject}</HelpBlock>
                             }
