@@ -52,12 +52,12 @@ class Employees extends Component {
                 <Row className="employees">
                     <Col className="employees-list" sm={6}>
                         <DataTable
-                            className="Employees-table"
+                            className="employees-table"
                             headers={employeeHeaders}
                             items={employees}
                         />
                     </Col>
-                    <Col className="Employees__adding" sm={4}>
+                    <Col className="employees__adding" sm={4}>
                         <FormGroup
                             controlId="formBasicText"
                             >

@@ -1,58 +1,70 @@
-import React, { Component } from "react";
-import {Button} from 'react-bootstrap';
+import React, {Component} from "react";
+import {observer} from "mobx-react";
+import PropTypes from 'prop-types';
 
-import Employees from "./Employees";
+import {Grid, Row, Col, Button, FormGroup, FormControl, ControlLabel, HelpBlock} from 'react-bootstrap';
+import DataTable from "../ReactComponents/DataTable/DataTable";
 
+import M from "../../Messages/messages";
+
+@observer
 class Vacations extends Component {
-  constructor() {
-    super();
-    this.state = {
-      projects: [],
-      employees: []
+
+    static propTypes = {
+        appStore: PropTypes.any
     };
-  }
 
-    componentDidMount() {
-        this.getProjects();
-        this.getEmployees();
+    constructor() {
+        super();
+        this.state = {
+            vacationHeaders: ['Project', 'First Name', 'Last Name', 'Vacation Start', 'Vacation End'],
+        }
     }
 
-    getProjects = () => {
-        const url = 'http://localhost:8081/projects';
-        fetch(url)
-            .then(response => response.json())
-            .then(response => this.setState({projects: response.data}))
-            .catch(err => console.error(err))
+    async componentDidMount() {
+        this.props.appStore.loadVacations();
     }
 
-    getEmployees = () => {
-      const url = 'http://localhost:8081/employees';
-      fetch(url)
-          .then(response => response.json())
-          .then(response => this.setState({employees: response.data}))
-          .catch(err => console.error(err))
+    onEmployeeFirstNameChange = (event) => {
+        const firstname = event.target.value;
+        this.props.appStore.setEmployeeFirstName(firstname);
     }
 
-  render() {
-    const {projects, employees} = this.state;
+    onEmployeeLastNameChange = (event) => {
+        const lastname = event.target.value;
+        this.props.appStore.setEmployeeLastName(lastname);
+    }
 
-    return (
-      <div>
-        <Button type="primary">Hello</Button>
-       <Employees/>
-        <div>
-          {projects.map(project => 
-            <div key={project.id}>{project.name}</div>
-          )}
-        </div>
-        <div>
-          {employees.map(employee => 
-            <div key={employee.employee_id}>{employee.employee_first_name} {employee.employee_last_name}</div>
-          )}
-        </div>
-      </div>
-    );
-  }
+    onEmployeeProjectSelect = (event) => {
+        const selectedProject = event.target.value;
+        this.props.appStore.setSelectedProject(selectedProject);
+    }
+
+    onAddEmployeeClick = () => {
+        this.props.appStore.addEmployee();
+    }
+
+    onDeleteEmployeeClick = () => {
+        this.props.appStore.deleteEmployee();
+    }
+
+    render() {
+        const {projects, employees, employee, selectedProject, emptyEmployee, isEmployeeNonUnique, vacations} = this.props.appStore;
+        const {vacationHeaders} = this.state;
+        return(
+            <Grid>
+                <Row className="vacations">
+                    <Col className="vacations-list" sm={6}>
+                        <DataTable
+                            className="vacations-table"
+                            headers={vacationHeaders}
+                            items={vacations}
+                        />
+                    </Col>
+                </Row>
+            </Grid>
+        )
+    }
 }
 
 export default Vacations;

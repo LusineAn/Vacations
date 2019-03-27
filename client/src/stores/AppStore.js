@@ -12,16 +12,22 @@ class AppStore {
         return {
             projects: Immutable.List(),
             employees: Immutable.List(),
+            vacations: Immutable.List(),
             project: {
                 name: ''
             },
             employee: {
                 firstname: '',
                 lastname: '',
-                vacation_start: '',
-                vacation_end: '',
                 project: ''
             },
+            // vacations: {
+            //         firstname: '',
+            //         lastname: '',
+            //         vacation_start: '',
+            //         vacation_end: '',
+            //         project: ''
+            // },
             selectedProject: '',
             emptyProject: false,
             emptyEmployee: false,
@@ -55,6 +61,15 @@ class AppStore {
     }
 
     @action
+    loadVacations = () => {
+        const url = 'http://localhost:8081/vacations';
+        fetch(url)
+            .then(response => response.json())
+            .then(({data}) => this.setVacations(data))
+            .catch(err => resolve(err));
+    }
+
+    @action
     setProjects = (projects) => {
         this.projects = projects;
     };
@@ -62,6 +77,11 @@ class AppStore {
     @action
     setEmployees = (employees) => {
         this.employees = employees;
+    };
+
+    @action
+    setVacations = (vacations) => {
+        this.vacations = vacations;
     };
 
     @action
@@ -135,6 +155,7 @@ class AppStore {
             this.emptyEmployee = true
             return;
         }
+
         this.isEmployeeNonUnique = !!this.employees.find(employee => {
             return (employee.firstname === firstname && employee.lastname === lastname)
         });

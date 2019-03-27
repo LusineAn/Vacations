@@ -43,15 +43,15 @@ class Projects extends Component {
 
         return(
             <Grid>
-                <Row className="Projects">
-                    <Col className="Projects-list" sm={6}>
+                <Row className="projects">
+                    <Col className="projects-list" sm={6}>
                         <DataTable
-                            className="Projects-list"
+                            className="projects-list"
                             headers={projectHeaders}
                             items={projects}
                         />
                     </Col>
-                    <Col className="Projects__adding" sm={4} smOffset={2}>
+                    <Col className="projects__adding" sm={4} smOffset={2}>
                         <FormGroup controlId="formBasicText">
                             <ControlLabel>{M.addProject}</ControlLabel>
                             <Form inline>

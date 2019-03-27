@@ -16,12 +16,15 @@ class VacationsController {
                             FROM vacations
                             INNER JOIN employees on employees.id = vacations.employee_id
                             INNER JOIN projects on projects.id = vacations.id
-                            ORDER BY employees.firstname`;
+                            ORDER BY projects.name`;
         connection.query(projectsEemployees, (err, results) => {
             if(err) {
                return res.send(err);
             }
             console.log(`Employee '${firstname}', '${lastname}' successfully deleted`);
+            return res.json({
+                data: results
+        })
         })
     };
 }
