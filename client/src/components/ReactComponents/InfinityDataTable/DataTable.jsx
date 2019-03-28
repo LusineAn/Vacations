@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import Messages from '../../../Messages/messages';
+import Messages from '../../messages';
 
 import Cell from './Cell/Cell';
 import Column from './Column';
@@ -64,7 +64,7 @@ class DataTable extends React.Component {
         stickyHeader: true,
         highlightRowOnHover: false,
         showNoResult: false,
-        noResultText: "noDataAvailable"
+        noResultText: Messages.dataTable.noDataAvailable
     };
 
     constructor(props) {

@@ -19,7 +19,9 @@ class AppStore {
             employee: {
                 firstname: '',
                 lastname: '',
-                project: ''
+                project: '',
+                vacation_start: '',
+                vacation_end: '',
             },
             // vacations: {
             //         firstname: '',
@@ -102,6 +104,16 @@ class AppStore {
     @action
     setEmployeeLastName(lastname) {
         this.employee.lastname = lastname;
+    }
+
+    @action
+    setVacationStartDay(startDay) {
+        this.employee.vacation_start = startDay;
+    }
+
+    @action
+    setVacationEndDay(endDay) {
+        this.employee.vacation_end = endDay;
     }
 
     @action

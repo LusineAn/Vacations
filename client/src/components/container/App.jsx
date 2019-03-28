@@ -25,9 +25,9 @@ class App extends Component {
     render() {
         return(
             <div>
-                <Projects appStore={this.state.appStore}/>
-                <Employees appStore={this.state.appStore}/>
-
+                {/* <Projects appStore={this.state.appStore}/>
+                <Employees appStore={this.state.appStore}/> */}
+                <Vacations appStore={this.state.appStore}/>
             </div>
     )};
 }

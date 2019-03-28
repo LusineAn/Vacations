@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import Immutable from 'immutable';
+import Immutable from 'immutable';
 import classnames from 'classnames';
 import {kebabCase} from 'lodash';
 
@@ -10,7 +10,7 @@ import Icon from '../../Icon';
 class BooleanCell extends React.Component {
     static propTypes = {
         rowKey: PropTypes.any,
-        // rowSource: PropTypes.instanceOf(Immutable.Map),
+        rowSource: PropTypes.instanceOf(Immutable.Map),
         attribute: PropTypes.string,
         className: PropTypes.string,
         hideFalseValue: PropTypes.bool

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import {Map} from 'immutable';
-// import urlTemplate from 'url-template';
+import {Map} from 'immutable';
+import urlTemplate from 'url-template';
 
 import {Link} from 'react-router-dom';
 import Cell from './Cell';

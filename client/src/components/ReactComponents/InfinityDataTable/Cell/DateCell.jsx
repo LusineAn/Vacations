@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import Immutable from 'immutable';
+import Immutable from 'immutable';
 
-// import {FormattedDate} from 'react-intl';
+import {FormattedDate} from 'react-intl';
 
 import Cell from './Cell';
 
 class DateCell extends React.Component {
     static propTypes = {
         rowKey: PropTypes.any,
-        // rowSource: PropTypes.instanceOf(Immutable.Map),
+        rowSource: PropTypes.instanceOf(Immutable.Map),
         attribute: PropTypes.string,
         className: PropTypes.string
     };

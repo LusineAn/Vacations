@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-// import {DATATABLE} from '../../constants';
+import {DATATABLE} from '../../constants';
 
 import Icon from '../Icon';
 
 const SORTED_CLASS = 'sorted';
 const SORTABLE_CLASS = 'sortable';
 const STICKY_CLASS = 'th--sticky';
-const {ASC, DESC} = ['asc, desc'];
+const {ASC, DESC} = DATATABLE.SORT_DIRECTIONS;
 
 /**
  * DataTable headCell component
@@ -37,7 +37,7 @@ class HeadCell extends React.Component {
     };
 
     constructor() {
-        // super(...arguments);
+        super(...arguments);
 
         this.state = {
             sortDirection: this.props.sortDirection,
@@ -58,9 +58,9 @@ class HeadCell extends React.Component {
                 sortDirection: sortDir
             });
         }
-        // else if (this.props.onHeadClick) {
-        //     this.props.onHeadClick(...arguments);
-        // }
+        else if (this.props.onHeadClick) {
+            this.props.onHeadClick(...arguments);
+        }
     };
 
     /**
