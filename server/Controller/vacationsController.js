@@ -8,23 +8,22 @@ class VacationsController {
     };
 
     getVacations (req, res) {
-        const projectsEemployees = `Select employees.lastname,
-                            employees.firstname,
-                            projects.name,
-                            vacations.start_date,
-                            vacations.end_date
-                            FROM vacations
-                            INNER JOIN employees on employees.id = vacations.employee_id
-                            INNER JOIN projects on projects.id = vacations.id
-                            ORDER BY projects.name`;
-        connection.query(projectsEemployees, (err, results) => {
+        const getVacations = `SELECT projects.name,
+                                    employees.firstname,
+                                    employees.lastname,
+                                    vacations.start_date,
+                                    vacations.end_date
+                                    FROM vacations
+                                    INNER JOIN employees ON employees.id = vacations.employee_id
+                                    INNER JOIN projects ON projects.id = vacations.project_id
+                                    ORDER BY projects.name`;
+        connection.query(getVacations, (err, results) => {
             if(err) {
-               return res.send(err);
+                return res.send(err);
             }
-            console.log(`Employee '${firstname}', '${lastname}' successfully deleted`);
             return res.json({
-                data: results
-        })
+                    data: results
+            })
         })
     };
 }
