@@ -110,14 +110,13 @@ class AppStore {
     }
 
     @action
-    setVacationStartDay(startDay) {
-        this.employee.vacation_start = startDay;
-        this.employee.vacation_end = null;
+    setVacationStartDate(startDate) {
+        this.employee.vacation_start = startDate;
     }
 
     @action
-    setVacationEndDay(endDay) {
-        this.employee.vacation_end = endDay;
+    setVacationEndDate(endDate) {
+        this.employee.vacation_end = endDate;
     }
 
     @action

@@ -29,15 +29,20 @@ class Vacations extends React.Component {
     }
 
     onVacationDatesChange = (startDate, endDate) => {
-        const vacation_start = startDate;
-        const vacation_end = endDate;
-        if (startDate) {
-            this.props.appStore.setVacationStartDay(vacation_start);
+
+        if (startDate && !startDate.isSame(this.props.appStore.employee.vacation_start)) {
+            this.props.appStore.setVacationStartDate(startDate);
         }
-        if(endDate) {
-            this.props.appStore.setVacationEndDay(vacation_end);
-        }
+        this.props.appStore.setVacationEndDate(endDate);
     }
+
+    isDayBlocked = (day) => {
+
+        const startDate = this.props.appStore.employee.vacation_start;
+        const endDate = this.props.appStore.employee.vacation_end;
+
+        return (day.isBefore(startDate, 'day') && !endDate) === true;
+    };
 
     render() {
         const {vacations, employee} = this.props.appStore;
@@ -58,6 +63,7 @@ class Vacations extends React.Component {
                             startDate={employee.vacation_start ? employee.vacation_start : null}
                             endDate={employee.vacation_end ?  employee.vacation_end : null}
                             onVacationDatesChange={this.onVacationDatesChange}
+                            isDayBlocked={this.isDayBlocked}
                         />
                     </Col>
                 </Row>

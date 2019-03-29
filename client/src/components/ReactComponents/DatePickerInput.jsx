@@ -17,6 +17,8 @@ class DatePickerInput extends React.Component {
         endDate: momentPropTypes.momentObj,
         onVacationDatesChange: PropTypes.func,
         isDayHighlighted: PropTypes.func,
+        isOutsideRange: PropTypes.func,
+        isDayBlocked: PropTypes.func
     }
 
     state = {
@@ -26,8 +28,12 @@ class DatePickerInput extends React.Component {
     };
 
     onDatesChange = (date) => {
-        const {startDate, endDate} = date;
-        const {onVacationDatesChange} = this.props;
+
+        const {focusedInput} = this.state;
+        const startDate = date.startDate;
+        const endDate = focusedInput === 'startDate' ? null : date.endDate;
+        const onVacationDatesChange = this.props.onVacationDatesChange;
+
         if(typeof onVacationDatesChange === 'function') {
             return onVacationDatesChange(startDate, endDate);
         }
@@ -40,6 +46,14 @@ class DatePickerInput extends React.Component {
             focusedInput: !focusedInput ? 'startDate' : focusedInput,
         });
     }
+
+    isDayBlocked = (day) => {
+        const {isDayBlocked} = this.props;
+        if(typeof isDayBlocked === 'function') {
+            return isDayBlocked(day);
+        }
+        return false;
+    };
 
     render() {
         const {
@@ -54,6 +68,7 @@ class DatePickerInput extends React.Component {
                 focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                 onDatesChange={this.onDatesChange} // PropTypes.func.isRequired,
                 onFocusChange={this.onFocusChange} // PropTypes.func.isRequired,
+                isDayBlocked={this.isDayBlocked}  //Figure out which dates we allow to select
                 numberOfMonths={2}
             />
         )
