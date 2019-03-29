@@ -1,5 +1,8 @@
 import Immutable from 'immutable';
 import {extendObservable, action, computed, runInAction, toJS} from 'mobx';
+import PropTypes from 'prop-types';
+import moment from 'moment';
+import momentPropTypes from 'react-moment-proptypes';
 // import _ from 'lodash';
 
 class AppStore {
@@ -109,6 +112,7 @@ class AppStore {
     @action
     setVacationStartDay(startDay) {
         this.employee.vacation_start = startDay;
+        this.employee.vacation_end = null;
     }
 
     @action

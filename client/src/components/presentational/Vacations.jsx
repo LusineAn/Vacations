@@ -1,7 +1,8 @@
 import React from "react";
-import {observer} from "mobx-react";
+import {observer, toJS} from "mobx-react";
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import momentPropTypes from 'react-moment-proptypes';
 
 import {Grid, Row, Col, Button, FormGroup, FormControl, ControlLabel, HelpBlock} from 'react-bootstrap';
 import DataTable from "../ReactComponents/DataTable/DataTable";
@@ -13,7 +14,7 @@ import M from "../../Messages/messages";
 class Vacations extends React.Component {
 
     static propTypes = {
-        appStore: PropTypes.any
+        appStore: PropTypes.object.isRequired
     };
 
     constructor() {
@@ -27,16 +28,21 @@ class Vacations extends React.Component {
         this.props.appStore.loadVacations();
     }
 
-    onDatesChange = (startDay, endDay) => {
-        const startDate = moment(startDate).format('L');
-        const endDate = moment(endDay).format('L');
-        this.props.appStore.setVacationStartDay(startDay);
-        this.props.appStore.setVacationEndDay(endDay);
+    onVacationDatesChange = (startDate, endDate) => {
+        const vacation_start = startDate;
+        const vacation_end = endDate;
+        if (startDate) {
+            this.props.appStore.setVacationStartDay(vacation_start);
+        }
+        if(endDate) {
+            this.props.appStore.setVacationEndDay(vacation_end);
+        }
     }
 
     render() {
-        const {vacations, startDay, endDay} = this.props.appStore;
+        const {vacations, employee} = this.props.appStore;
         const {vacationHeaders} = this.state;
+
         return(
             <Grid>
                 <Row className="vacations">
@@ -49,9 +55,9 @@ class Vacations extends React.Component {
                     </Col>
                     <Col className="date-picker" sm ={6}>
                         <DatePickerInput
-                            startDay={startDay}
-                            endDay={endDay}
-                            onDatesChange={this.onDatesChange}
+                            startDate={employee.vacation_start ? employee.vacation_start : null}
+                            endDate={employee.vacation_end ?  employee.vacation_end : null}
+                            onVacationDatesChange={this.onVacationDatesChange}
                         />
                     </Col>
                 </Row>

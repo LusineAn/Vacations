@@ -14,7 +14,7 @@ import M from '../../Messages/messages';
 class Projects extends Component {
     
     static propTypes = {
-        appStore: PropTypes.any
+        appStore: PropTypes.object.isRequired
     };
 
     constructor() {
