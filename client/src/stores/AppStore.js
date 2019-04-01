@@ -19,20 +19,22 @@ class AppStore {
             project: {
                 name: ''
             },
-            employee: {
+            newEmployee: {
                 firstname: '',
                 lastname: '',
                 project: '',
                 vacation_start: '',
-                vacation_end: '',
+                vacation_end: ''
             },
-            // vacations: {
-            //         firstname: '',
-            //         lastname: '',
-            //         vacation_start: '',
-            //         vacation_end: '',
-            //         project: ''
-            // },
+            selectedEmployee: {
+                employee_id: '',
+                project_id: '',
+                firstname: '',
+                lastname: '',
+                project: '',
+                vacation_start: '',
+                vacation_end: ''
+            },
             selectedProject: '',
             emptyProject: false,
             emptyEmployee: false,
@@ -100,23 +102,33 @@ class AppStore {
     }
 
     @action
+    setSelectedEmployee(selectedEmployee) {
+        this.selectedEmployee = selectedEmployee;
+    }
+
+    @action
     setEmployeeFirstName(firstname) {
-        this.employee.firstname = firstname;
+        this.newEmployee.firstname = firstname;
     }
 
     @action
     setEmployeeLastName(lastname) {
-        this.employee.lastname = lastname;
+        this.newEmployee.lastname = lastname;
     }
 
     @action
     setVacationStartDate(startDate) {
-        this.employee.vacation_start = startDate;
+        this.selectedEmployee.vacation_start = moment(startDate).format('MM/DD/YYYY');
     }
 
     @action
     setVacationEndDate(endDate) {
-        this.employee.vacation_end = endDate;
+        if(endDate) {
+            this.selectedEmployee.vacation_end = moment(endDate).format('MM/DD/YYYY');
+            this.addEmployeeVacation();
+            return;
+        }
+        this.selectedEmployee.vacation_end = endDate;
     }
 
     @action
@@ -127,8 +139,13 @@ class AppStore {
     @action
     resetEmployeeData() {
         this.selectedProject = '';
-        this.employee.firstname = '';
-        this.employee.lastname = '';
+        this.newEmployee.firstname = '';
+        this.newEmployee.lastname = '';
+    }
+
+    @action
+    resetVacationData() {
+        this.selectedEmployee = '';
     }
 
     @action
@@ -162,7 +179,7 @@ class AppStore {
         this.emptyEmployee = false;
         this.isEmployeeNonUnique = false;
 
-        const {firstname, lastname} = this.employee;
+        const {firstname, lastname} = this.newEmployee;
         const selectedProject = this.selectedProject;
 
         if(firstname.trim().length === 0 ||
@@ -201,13 +218,30 @@ class AppStore {
 
     @action
     deleteEmployee() {
-        const {firstname, lastname} = this.employee;
+        const {firstname, lastname} = this.newEmployee;
         const url = `http://localhost:8081/employees/delete?firstname=${firstname}&lastname=${lastname}`;
         fetch(url, {method: "DELETE"})
             .then(response => response.json())
             .then(() => {this.loadEmployees()})
             .then(() => this.resetEmployeeData())
             .catch(err => console.log(err))
+    }
+
+    @action
+    addEmployeeVacation() {
+        const employee_id = this.selectedEmployee.employee_id;
+        const project_id = this.selectedEmployee.project_id;
+        const start_date = this.selectedEmployee.vacation_start;
+        const end_date = this.selectedEmployee.vacation_end;
+
+        const url = `http://localhost:8081/vacations/add?employee_id=${employee_id}
+                    &project_id=${project_id}&start_date${start_date}&end_date${end_date}`;
+        fetch(url, {method: "PUT"} )
+            .then(response => {
+                return response.json()})
+                .then(() => this.loadVacations())
+                .then(() => this.resetVacationData())
+                .catch(err => console.log(err));
     }
 }
 

@@ -45,7 +45,7 @@ class Employees extends Component {
     }
 
     render() {
-        const {projects, employees, employee, selectedProject, emptyEmployee, isEmployeeNonUnique} = this.props.appStore;
+        const {projects, employees, newEmployee, selectedProject, emptyEmployee, isEmployeeNonUnique} = this.props.appStore;
         const {employeeHeaders} = this.state;
         return(
             <Grid>
@@ -64,13 +64,13 @@ class Employees extends Component {
                             <ControlLabel>{M.addEmployee}</ControlLabel>
                             <FormControl
                                 type="text"
-                                value={employee.firstname}
+                                value={newEmployee.firstname}
                                 placeholder={M.firstnamePlaceholder}
                                 onChange={this.onEmployeeFirstNameChange}
                             />
                             <FormControl
                                 type="text"
-                                value={employee.lastname}
+                                value={newEmployee.lastname}
                                 placeholder={M.lastnamePlaceholder}
                                 onChange={this.onEmployeeLastNameChange}
                             />

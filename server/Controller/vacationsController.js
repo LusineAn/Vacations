@@ -11,6 +11,8 @@ class VacationsController {
         const getVacations = `SELECT projects.name,
                                     employees.firstname,
                                     employees.lastname,
+                                    vacations.employee_id,
+                                    vacations.project_id,
                                     vacations.start_date,
                                     vacations.end_date
                                     FROM vacations

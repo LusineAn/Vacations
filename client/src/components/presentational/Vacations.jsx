@@ -30,7 +30,7 @@ class Vacations extends React.Component {
 
     onVacationDatesChange = (startDate, endDate) => {
 
-        if (startDate && !startDate.isSame(this.props.appStore.employee.vacation_start)) {
+        if (startDate && !startDate.isSame(this.props.appStore.selectedEmployee.vacation_start)) {
             this.props.appStore.setVacationStartDate(startDate);
         }
         this.props.appStore.setVacationEndDate(endDate);
@@ -38,14 +38,19 @@ class Vacations extends React.Component {
 
     isDayBlocked = (day) => {
 
-        const startDate = this.props.appStore.employee.vacation_start;
-        const endDate = this.props.appStore.employee.vacation_end;
+        const startDate = this.props.appStore.selectedEmployee.vacation_start;
+        const endDate = this.props.appStore.selectedEmployee.vacation_end;
 
         return (day.isBefore(startDate, 'day') && !endDate) === true;
     };
 
+    onEmployeeSelect = (event) => {
+        const selectedEmployee = this.props.appStore.vacations[event.target.value];
+        this.props.appStore.setSelectedEmployee(selectedEmployee);
+    }
+
     render() {
-        const {vacations, employee} = this.props.appStore;
+        const {vacations, selectedEmployee} = this.props.appStore;
         const {vacationHeaders} = this.state;
 
         return(
@@ -60,11 +65,28 @@ class Vacations extends React.Component {
                     </Col>
                     <Col className="date-picker" sm ={6}>
                         <DatePickerInput
-                            startDate={employee.vacation_start ? employee.vacation_start : null}
-                            endDate={employee.vacation_end ?  employee.vacation_end : null}
+                            startDate={selectedEmployee.vacation_start ? moment(selectedEmployee.vacation_start) : null}
+                            endDate={selectedEmployee.vacation_end ?  moment(selectedEmployee.vacation_end) : null}
                             onVacationDatesChange={this.onVacationDatesChange}
                             isDayBlocked={this.isDayBlocked}
                         />
+                    </Col>
+                </Row>
+                <Row className="employee-selector">
+                    <Col sm={6}>
+                        <FormControl
+                            componentClass="select"
+                            placeholder={M.selectProjectPlaceholder}
+                            onChange={this.onEmployeeSelect}
+                        >
+                        {vacations.map((vacation, index) =>
+                            <option
+                                key = {index}
+                                value={index}>
+                                {`${vacation.firstname} ${vacation.lastname}`}
+                            </option>
+                            )}
+                        </FormControl>
                     </Col>
                 </Row>
             </Grid>
