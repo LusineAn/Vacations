@@ -118,11 +118,16 @@ class AppStore {
 
     @action
     setVacationStartDate(startDate) {
-        this.selectedEmployee.vacation_start = startDate;
+        this.selectedEmployee.vacation_start = moment(startDate).format('MM/DD/YYYY');
     }
 
     @action
     setVacationEndDate(endDate) {
+        if(endDate) {
+            this.selectedEmployee.vacation_end = moment(endDate).format('MM/DD/YYYY');
+            this.addEmployeeVacation();
+            return;
+        }
         this.selectedEmployee.vacation_end = endDate;
     }
 
@@ -136,6 +141,11 @@ class AppStore {
         this.selectedProject = '';
         this.newEmployee.firstname = '';
         this.newEmployee.lastname = '';
+    }
+
+    @action
+    resetVacationData() {
+        this.selectedEmployee = '';
     }
 
     @action
@@ -229,8 +239,8 @@ class AppStore {
         fetch(url, {method: "PUT"} )
             .then(response => {
                 return response.json()})
-                .then(() => this.loadEmployees())
-                .then(() => this.resetEmployeeData())
+                .then(() => this.loadVacations())
+                .then(() => this.resetVacationData())
                 .catch(err => console.log(err));
     }
 }

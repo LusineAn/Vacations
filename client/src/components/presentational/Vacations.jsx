@@ -65,8 +65,8 @@ class Vacations extends React.Component {
                     </Col>
                     <Col className="date-picker" sm ={6}>
                         <DatePickerInput
-                            startDate={selectedEmployee.vacation_start ? selectedEmployee.vacation_start : null}
-                            endDate={selectedEmployee.vacation_end ?  selectedEmployee.vacation_end : null}
+                            startDate={selectedEmployee.vacation_start ? moment(selectedEmployee.vacation_start) : null}
+                            endDate={selectedEmployee.vacation_end ?  moment(selectedEmployee.vacation_end) : null}
                             onVacationDatesChange={this.onVacationDatesChange}
                             isDayBlocked={this.isDayBlocked}
                         />
