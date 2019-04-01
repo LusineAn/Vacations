@@ -101,12 +101,12 @@ class AppStore {
 
     @action
     setEmployeeFirstName(firstname) {
-        this.employee.firstname = firstname;
+        this.newEmployee.firstname = firstname;
     }
 
     @action
     setEmployeeLastName(lastname) {
-        this.employee.lastname = lastname;
+        this.newEmployee.lastname = lastname;
     }
 
     @action
@@ -127,8 +127,8 @@ class AppStore {
     @action
     resetEmployeeData() {
         this.selectedProject = '';
-        this.employee.firstname = '';
-        this.employee.lastname = '';
+        this.newEmployee.firstname = '';
+        this.newEmployee.lastname = '';
     }
 
     @action
@@ -162,7 +162,7 @@ class AppStore {
         this.emptyEmployee = false;
         this.isEmployeeNonUnique = false;
 
-        const {firstname, lastname} = this.employee;
+        const {firstname, lastname} = this.newEmployee;
         const selectedProject = this.selectedProject;
 
         if(firstname.trim().length === 0 ||
@@ -201,7 +201,7 @@ class AppStore {
 
     @action
     deleteEmployee() {
-        const {firstname, lastname} = this.employee;
+        const {firstname, lastname} = this.newEmployee;
         const url = `http://localhost:8081/employees/delete?firstname=${firstname}&lastname=${lastname}`;
         fetch(url, {method: "DELETE"})
             .then(response => response.json())
