@@ -26,6 +26,22 @@ class VacationsController {
             })
         })
     };
+
+    updateVacations (req, res) {
+        const {employee_id, project_id, start_date, end_date} = req.query;
+        const updateVacation = `UPDATE Vacations
+                                SET start_date = '${start_date}', end_date = '${end_date}'
+                                WHERE employee_id = ${employee_id}
+                                AND project_id = ${project_id}`;
+
+        connection.query(updateVacation, (err, results) => {
+            if(err) {
+                return res.send(err);
+            }
+            console.log(`Vacations successfully updated`);
+            return res.send({});
+        });
+    };
 }
   
   module.exports = new VacationsController();

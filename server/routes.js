@@ -13,5 +13,6 @@ router.get('/employees', employeesController.getEmployees);
 router.post('/employees/add', employeesController.addEmployee);
 router.delete('/employees/delete', employeesController.deleteEmployee);
 router.get('/vacations', vacationsController.getVacations);
+router.put('/vacations/update', vacationsController.updateVacations);
 
 module.exports = router;
