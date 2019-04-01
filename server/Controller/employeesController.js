@@ -6,6 +6,8 @@ class EmployeesController {
         const getEmployees = `SELECT
                             vacations.employee_id,
                             vacations.project_id,
+                            vacations.start_date,
+                            vacations.end_date,
                             employees.firstname,
                             employees.lastname,
                             projects.name

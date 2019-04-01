@@ -19,6 +19,7 @@ let messages = {
     projectNamePlaceholder: 'Enter project name',
     firstnamePlaceholder: 'Enter employee First name',
     lastnamePlaceholder: 'Enter employee Last name',
-    selectProjectPlaceholder: `Select employee's project`
+    selectProjectPlaceholder: `Select employee's project`,
+    selectEmployeePlaceholder: `Select employee`
 };
 module.exports = messages;

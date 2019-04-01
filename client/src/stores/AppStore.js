@@ -32,8 +32,8 @@ class AppStore {
                 firstname: '',
                 lastname: '',
                 project: '',
-                vacation_start: '',
-                vacation_end: ''
+                start_date: '',
+                end_date: ''
             },
             selectedProject: '',
             emptyProject: false,
@@ -118,17 +118,17 @@ class AppStore {
 
     @action
     setVacationStartDate(startDate) {
-        this.selectedEmployee.vacation_start = moment(startDate).format('MM/DD/YYYY');
+        this.selectedEmployee.start_date = moment(startDate).format('MM/DD/YYYY');
     }
 
     @action
     setVacationEndDate(endDate) {
         if(endDate) {
-            this.selectedEmployee.vacation_end = moment(endDate).format('MM/DD/YYYY');
+            this.selectedEmployee.end_date = moment(endDate).format('MM/DD/YYYY');
             this.addEmployeeVacation();
             return;
         }
-        this.selectedEmployee.vacation_end = endDate;
+        this.selectedEmployee.end_date = endDate;
     }
 
     @action
@@ -179,11 +179,12 @@ class AppStore {
         this.emptyEmployee = false;
         this.isEmployeeNonUnique = false;
 
-        const {firstname, lastname} = this.newEmployee;
+        const firstname = this.newEmployee.firstname.trim();
+        const lastname = this.newEmployee.lastname.trim();
         const selectedProject = this.selectedProject;
 
-        if(firstname.trim().length === 0 ||
-        lastname.trim().length === 0 || selectedProject.length === 0) {
+        if(firstname.length === 0 ||
+        lastname.length === 0 || selectedProject.length === 0) {
             this.emptyEmployee = true
             return;
         }
@@ -231,17 +232,42 @@ class AppStore {
     addEmployeeVacation() {
         const employee_id = this.selectedEmployee.employee_id;
         const project_id = this.selectedEmployee.project_id;
-        const start_date = this.selectedEmployee.vacation_start;
-        const end_date = this.selectedEmployee.vacation_end;
+        const start_date = this.selectedEmployee.start_date;
+        const end_date = this.selectedEmployee.end_date;
 
-        const url = `http://localhost:8081/vacations/add?employee_id=${employee_id}
-                    &project_id=${project_id}&start_date${start_date}&end_date${end_date}`;
+        this.checkEmployeeVacation(this.selectedEmployee);
+        if(this.isVacationsIntersect) {
+            return;
+        }
+
+        const url = `http://localhost:8081/vacations/update?employee_id=${employee_id}
+                    &project_id=${project_id}&start_date=${start_date}&end_date=${end_date}`;
         fetch(url, {method: "PUT"} )
             .then(response => {
                 return response.json()})
                 .then(() => this.loadVacations())
                 .then(() => this.resetVacationData())
                 .catch(err => console.log(err));
+    }
+
+
+    getFilteredEmployees(project) {
+        const filteredEmployees = this.employees.filter(employee => employee.name === project);
+        return filteredEmployees;
+    }
+
+    @action
+    checkEmployeeVacation(employee) {
+        this.isVacationsIntersect = false;
+        const employeeProject = employee.name;
+        const filteredEmployees = this.getFilteredEmployees(employeeProject);
+        this.isVacationsIntersect = filteredEmployees.find(filteredEmployee => {
+        return (
+            (moment(employee.start_date).isSameOrAfter(moment(filteredEmployee.start_date)) &&
+            moment(employee.start_date).isSameOrBefore(moment(filteredEmployee.end_date))) ||
+            (moment(employee.end_date).isSameOrAfter(moment(filteredEmployee.start_date)) &&
+            moment(employee.end_date).isSameOrBefore(moment(filteredEmployee.end_date)))
+        )});
     }
 }
 

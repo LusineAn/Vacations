@@ -30,7 +30,7 @@ class Vacations extends React.Component {
 
     onVacationDatesChange = (startDate, endDate) => {
 
-        if (startDate && !startDate.isSame(this.props.appStore.selectedEmployee.vacation_start)) {
+        if (startDate && !startDate.isSame(this.props.appStore.selectedEmployee.start_date)) {
             this.props.appStore.setVacationStartDate(startDate);
         }
         this.props.appStore.setVacationEndDate(endDate);
@@ -38,8 +38,8 @@ class Vacations extends React.Component {
 
     isDayBlocked = (day) => {
 
-        const startDate = this.props.appStore.selectedEmployee.vacation_start;
-        const endDate = this.props.appStore.selectedEmployee.vacation_end;
+        const startDate = this.props.appStore.selectedEmployee.start_date;
+        const endDate = this.props.appStore.selectedEmployee.end_date;
 
         return (day.isBefore(startDate, 'day') && !endDate) === true;
     };
@@ -65,8 +65,8 @@ class Vacations extends React.Component {
                     </Col>
                     <Col className="date-picker" sm ={6}>
                         <DatePickerInput
-                            startDate={selectedEmployee.vacation_start ? moment(selectedEmployee.vacation_start) : null}
-                            endDate={selectedEmployee.vacation_end ?  moment(selectedEmployee.vacation_end) : null}
+                            startDate={selectedEmployee.start_date ? moment(selectedEmployee.start_date) : null}
+                            endDate={selectedEmployee.end_date ?  moment(selectedEmployee.end_date) : null}
                             onVacationDatesChange={this.onVacationDatesChange}
                             isDayBlocked={this.isDayBlocked}
                         />
@@ -76,7 +76,7 @@ class Vacations extends React.Component {
                     <Col sm={6}>
                         <FormControl
                             componentClass="select"
-                            placeholder={M.selectProjectPlaceholder}
+                            placeholder={M.selectEmployeePlaceholder}
                             onChange={this.onEmployeeSelect}
                         >
                         {vacations.map((vacation, index) =>

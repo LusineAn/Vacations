@@ -30,14 +30,23 @@ class VacationsController {
     };
 
     updateVacations (req, res) {
+        console.log('update vacations');
         const {employee_id, project_id, start_date, end_date} = req.query;
-        const updateVacation = `UPDATE Vacations
-                                SET start_date = '${start_date}', end_date = '${end_date}'
-                                WHERE employee_id = ${employee_id}
-                                AND project_id = ${project_id}`;
+        // const start_date = STR_TO_DATE(`${req.query.start_date}`, '%M/%d/%Y');
+        // const end_date = STR_TO_DATE(`${req.query.end_date}`, '%M/%d/%Y');
+        console.log('employee_id: ' + employee_id);
+        console.log('project_id: ' + project_id);
+        console.log('start_date: ' + start_date);
+        console.log('end_date: ' + end_date);
+        const updateVacation = `UPDATE vacations
+                                SET start_date = STR_TO_DATE('${start_date}', '%M/%d/%Y'),
+                                end_date = STR_TO_DATE('${end_date}', '%M/%d/%Y')
+                                WHERE employee_id = '${employee_id}'
+                                AND project_id = '${project_id}'`;
 
         connection.query(updateVacation, (err, results) => {
             if(err) {
+                console.log(err);
                 return res.send(err);
             }
             console.log(`Vacations successfully updated`);
