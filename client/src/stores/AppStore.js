@@ -27,6 +27,8 @@ class AppStore {
                 vacation_end: ''
             },
             selectedEmployee: {
+                employee_id: '',
+                project_id: '',
                 firstname: '',
                 lastname: '',
                 project: '',
@@ -97,6 +99,11 @@ class AppStore {
     @action
     setSelectedProject(selectedProject) {
         this.selectedProject = selectedProject;
+    }
+
+    @action
+    setSelectedEmployee(selectedEmployee) {
+        this.selectedEmployee = selectedEmployee;
     }
 
     @action
@@ -208,6 +215,23 @@ class AppStore {
             .then(() => {this.loadEmployees()})
             .then(() => this.resetEmployeeData())
             .catch(err => console.log(err))
+    }
+
+    @action
+    addEmployeeVacation() {
+        const employee_id = this.selectedEmployee.employee_id;
+        const project_id = this.selectedEmployee.project_id;
+        const start_date = this.selectedEmployee.vacation_start;
+        const end_date = this.selectedEmployee.vacation_end;
+
+        const url = `http://localhost:8081/vacations/add?employee_id=${employee_id}
+                    &project_id=${project_id}&start_date${start_date}&end_date${end_date}`;
+        fetch(url, {method: "PUT"} )
+            .then(response => {
+                return response.json()})
+                .then(() => this.loadEmployees())
+                .then(() => this.resetEmployeeData())
+                .catch(err => console.log(err));
     }
 }
 

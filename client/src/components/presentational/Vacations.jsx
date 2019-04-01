@@ -44,6 +44,11 @@ class Vacations extends React.Component {
         return (day.isBefore(startDate, 'day') && !endDate) === true;
     };
 
+    onEmployeeSelect = (event) => {
+        const selectedEmployee = this.props.appStore.vacations[event.target.value];
+        this.props.appStore.setSelectedEmployee(selectedEmployee);
+    }
+
     render() {
         const {vacations, selectedEmployee} = this.props.appStore;
         const {vacationHeaders} = this.state;
@@ -65,6 +70,23 @@ class Vacations extends React.Component {
                             onVacationDatesChange={this.onVacationDatesChange}
                             isDayBlocked={this.isDayBlocked}
                         />
+                    </Col>
+                </Row>
+                <Row className="employee-selector">
+                    <Col sm={6}>
+                        <FormControl
+                            componentClass="select"
+                            placeholder={M.selectProjectPlaceholder}
+                            onChange={this.onEmployeeSelect}
+                        >
+                        {vacations.map((vacation, index) =>
+                            <option
+                                key = {index}
+                                value={index}>
+                                {`${vacation.firstname} ${vacation.lastname}`}
+                            </option>
+                            )}
+                        </FormControl>
                     </Col>
                 </Row>
             </Grid>
