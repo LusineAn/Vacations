@@ -30,7 +30,7 @@ class Vacations extends React.Component {
 
     onVacationDatesChange = (startDate, endDate) => {
 
-        if (startDate && !startDate.isSame(this.props.appStore.employee.vacation_start)) {
+        if (startDate && !startDate.isSame(this.props.appStore.selectedEmployee.vacation_start)) {
             this.props.appStore.setVacationStartDate(startDate);
         }
         this.props.appStore.setVacationEndDate(endDate);
@@ -38,14 +38,14 @@ class Vacations extends React.Component {
 
     isDayBlocked = (day) => {
 
-        const startDate = this.props.appStore.employee.vacation_start;
-        const endDate = this.props.appStore.employee.vacation_end;
+        const startDate = this.props.appStore.selectedEmployee.vacation_start;
+        const endDate = this.props.appStore.selectedEmployee.vacation_end;
 
         return (day.isBefore(startDate, 'day') && !endDate) === true;
     };
 
     render() {
-        const {vacations, employee} = this.props.appStore;
+        const {vacations, selectedEmployee} = this.props.appStore;
         const {vacationHeaders} = this.state;
 
         return(
@@ -60,8 +60,8 @@ class Vacations extends React.Component {
                     </Col>
                     <Col className="date-picker" sm ={6}>
                         <DatePickerInput
-                            startDate={employee.vacation_start ? employee.vacation_start : null}
-                            endDate={employee.vacation_end ?  employee.vacation_end : null}
+                            startDate={selectedEmployee.vacation_start ? selectedEmployee.vacation_start : null}
+                            endDate={selectedEmployee.vacation_end ?  selectedEmployee.vacation_end : null}
                             onVacationDatesChange={this.onVacationDatesChange}
                             isDayBlocked={this.isDayBlocked}
                         />
