@@ -82,3 +82,12 @@ https://mobx.js.org/best/decorators.html
 
 ---------Date Picker----------------
 https://github.com/airbnb/react-dates
+
+---------React-Router--------------
+1. Fixing the "cannot GET /URL" error on refresh with React Router
+	and Reach Router (or how client side routers work):
+https://tylermcginnis.com/react-router-cannot-get-url-refresh/
+
+---------FUTURE----------
+1. TO DO
+https://stackoverflow.com/questions/27928372/react-router-urls-dont-work-when-refreshing-or-writing-manually

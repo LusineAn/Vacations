@@ -91,7 +91,7 @@ class Employees extends Component {
                                 onChange={this.onEmployeeProjectSelect}
                                 value={selectedProject}
                             >
-                            <option value="">{M.selectOption}</option>
+                            <option value="">{M.selectProject}</option>
                             {projects.map((project, index) =>
                                 <option
                                     key = {index}

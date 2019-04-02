@@ -214,7 +214,7 @@ class AppStore {
         const end_date = this.selectedEmployee.end_date;
 
         this.checkEmployeeVacation(this.selectedEmployee);
-        if(this.isVacationsIntersect) {
+        if(this.isVacationsIntersect || !employee_id || !project_id) {
             return;
         }
 

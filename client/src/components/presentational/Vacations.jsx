@@ -89,7 +89,7 @@ class Vacations extends React.Component {
                                 componentClass="select"
                                 onChange={this.onEmployeeSelect}
                             >
-                            <option value="">{M.selectOption}</option>
+                            <option value="">{M.selectEmployee}</option>
                             {vacations.map((vacation, index) =>
                                 <option
                                     key = {index}
