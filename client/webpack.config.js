@@ -5,7 +5,8 @@ module.exports = {
   entry: "./src/index.js",
   output: {
     path: path.join(__dirname, "./public"),
-    filename: "bundle.js"
+    filename: "bundle.js",
+    publicPath: '/'
   },
   resolve: {
     extensions: ['.jsx', '.js', '.json', '.css', '.scss']
@@ -24,6 +25,9 @@ module.exports = {
         use: ["style-loader", "css-loader", "sass-loader"]
       }
     ]
+  },
+  devServer: {
+    historyApiFallback: true,
   },
   plugins: [
     new HtmlWebPackPlugin({
