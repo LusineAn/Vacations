@@ -1,15 +1,13 @@
-import React, {Component} from "react";
-import {observer} from "mobx-react";
+import React from "react";
+import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 
 import {AppStore} from "../../stores/AppStore";
 
-import NavBar from "../presentational/NavBar";
 import Vacations from "../presentational/Vacations";
 import Projects from "../presentational/Projects";
 import Employees from "../presentational/Employees";
-import Routes from "../../Routes";
 
-class App extends Component {
+class App extends React.Component {
 
     constructor() {
         super();
@@ -24,13 +22,22 @@ class App extends Component {
 
     render() {
         return(
-            <div>
-                {/* <NavBar></NavBar> */}
-                {/* <Routes></Routes> */}
-                {/* <Projects appStore={this.state.appStore}/> */}
-                {/* <Employees appStore={this.state.appStore}/> */}
-                <Vacations appStore={this.state.appStore}/>
-            </div>
+            <Router>
+                <div>
+                    <nav className="navbar navbar-expand-lg navbar-light">
+                        <ul className="navbar-nav mr-auto">
+                            <li><Link to={'/'} className="nav-link">Vacations</Link></li>
+                            <li><Link to={'/projects'} className="nav-link">Projects</Link></li>
+                            <li><Link to={'/employees'} className="nav-link">Employees</Link></li>
+                        </ul>
+                    </nav>
+                    <Switch>
+                        <Route exact path='/' render={() => <Vacations appStore={this.state.appStore}/> }/>
+                        <Route path='/projects' render={() => <Projects appStore={this.state.appStore}/> }/>
+                        <Route path='/employees' render={() => <Employees appStore={this.state.appStore}/> }/>
+                    </Switch>
+                </div>
+            </Router>
     )};
 }
 

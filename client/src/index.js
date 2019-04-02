@@ -7,8 +7,4 @@ import App from "./components/container/App";
 import "../assets/stylesheets/VacationApp.scss"
 
 //TO DO
-ReactDOM.render((
-    <BrowserRouter>
-        <App />
-    </BrowserRouter>
-), document.getElementById("vacations-app"));
+ReactDOM.render(<App />, document.getElementById("vacations-app"));
