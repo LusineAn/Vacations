@@ -1,4 +1,11 @@
-@import "./Navbar";
-@import "./Projects";
-@import "./Employees.scss";
-@import "./ReactComponents/dataTable";
+.vacations {
+    margin-top: 50px;
+}
+
+.employee-selector {
+    margin-top: 50px;
+
+    .vacation-warning-message {
+        color: red;
+    }
+}

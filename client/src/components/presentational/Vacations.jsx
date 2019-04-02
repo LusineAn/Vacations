@@ -2,9 +2,8 @@ import React from "react";
 import {observer, toJS} from "mobx-react";
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import momentPropTypes from 'react-moment-proptypes';
 
-import {Grid, Row, Col, Button, FormGroup, FormControl, ControlLabel, HelpBlock} from 'react-bootstrap';
+import {Grid, Row, Col, FormControl} from 'react-bootstrap';
 import DataTable from "../ReactComponents/DataTable/DataTable";
 import DatePickerInput from "../ReactComponents/DatePickerInput";
 
@@ -29,7 +28,7 @@ class Vacations extends React.Component {
     }
 
     onVacationDatesChange = (startDate, endDate) => {
-
+        this.props.appStore.setIsVacationsIntersect(false);
         if (startDate && !startDate.isSame(this.props.appStore.selectedEmployee.start_date)) {
             this.props.appStore.setVacationStartDate(startDate);
         }
@@ -45,6 +44,7 @@ class Vacations extends React.Component {
     };
 
     onEmployeeSelect = (event) => {
+        this.props.appStore.setIsVacationsIntersect(false);
         if(!event.target.value.trim()) {
             return
         }
@@ -53,7 +53,7 @@ class Vacations extends React.Component {
     }
 
     render() {
-        const {vacations, selectedEmployee} = this.props.appStore;
+        const {vacations, selectedEmployee, isVacationsIntersect} = this.props.appStore;
         const {vacationHeaders} = this.state;
         const vacationsList = vacations.map(vacation => {
             const simpleVacation = {
@@ -100,6 +100,9 @@ class Vacations extends React.Component {
                             </option>
                             )}
                         </FormControl>
+                        {isVacationsIntersect &&
+                            <span className="vacation-warning-message">{M.vacationWarning}</span>
+                        }
                     </Col>
                 </Row>
             </Grid>

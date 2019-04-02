@@ -26,7 +26,9 @@ class EmployeesController {
     };
     
     addEmployee (req, res) {
-        const {firstname, lastname, project} = req.query;
+        const {project} = req.query;
+        const firstname = req.query.firstname.trim();
+        const lastname = req.query.lastname.trim();
         const insertEmployee = `INSERT INTO employees (firstname, lastname) VALUES('${firstname}', '${lastname}')`;
         
         connection.query(insertEmployee, (err, results) => {

@@ -1,9 +1,8 @@
 import Immutable from 'immutable';
-import {extendObservable, action, computed, runInAction, toJS} from 'mobx';
+import {extendObservable, action, computed, toJS} from 'mobx';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import momentPropTypes from 'react-moment-proptypes';
-// import _ from 'lodash';
 
 class AppStore {
 
@@ -26,6 +25,7 @@ class AppStore {
                 vacation_start: '',
                 vacation_end: ''
             },
+            // selectedEmployee: Immutable.Map(),
             selectedEmployee: {
                 employee_id: '',
                 project_id: '',
@@ -39,7 +39,8 @@ class AppStore {
             emptyProject: false,
             emptyEmployee: false,
             isProjectNonUnique: false,
-            isEmployeeNonUnique: false
+            isEmployeeNonUnique: false,
+            isVacationsIntersect: false
         };
     };
 
@@ -116,12 +117,10 @@ class AppStore {
         this.newEmployee.lastname = lastname;
     }
 
-    @action
     setVacationStartDate(startDate) {
         this.selectedEmployee.start_date = moment(startDate).format('MM/DD/YYYY');
     }
 
-    @action
     setVacationEndDate(endDate) {
         if(endDate) {
             this.selectedEmployee.end_date = moment(endDate).format('MM/DD/YYYY');
@@ -129,6 +128,10 @@ class AppStore {
             return;
         }
         this.selectedEmployee.end_date = endDate;
+    }
+
+    setIsVacationsIntersect(intersect) {
+        this.isVacationsIntersect = intersect;
     }
 
     @action
@@ -256,17 +259,17 @@ class AppStore {
         return filteredEmployees;
     }
 
-    @action
     checkEmployeeVacation(employee) {
-        this.isVacationsIntersect = false;
         const employeeProject = employee.name;
         const filteredEmployees = this.getFilteredEmployees(employeeProject);
-        this.isVacationsIntersect = filteredEmployees.find(filteredEmployee => {
+        this.isVacationsIntersect = !!filteredEmployees.find(filteredEmployee => {
         return (
-            (moment(employee.start_date).isSameOrAfter(moment(filteredEmployee.start_date)) &&
-            moment(employee.start_date).isSameOrBefore(moment(filteredEmployee.end_date))) ||
-            (moment(employee.end_date).isSameOrAfter(moment(filteredEmployee.start_date)) &&
-            moment(employee.end_date).isSameOrBefore(moment(filteredEmployee.end_date)))
+            (filteredEmployee.employee_id !== employee.employee_id) && (
+                (moment(employee.start_date).isSameOrAfter(moment(filteredEmployee.start_date)) &&
+                moment(employee.start_date).isSameOrBefore(moment(filteredEmployee.end_date))) ||
+                (moment(employee.end_date).isSameOrAfter(moment(filteredEmployee.start_date)) &&
+                moment(employee.end_date).isSameOrBefore(moment(filteredEmployee.end_date)))
+            )
         )});
     }
 }

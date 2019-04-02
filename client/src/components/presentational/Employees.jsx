@@ -101,10 +101,10 @@ class Employees extends Component {
                                 )}
                             </FormControl>
                             {emptyEmployee &&
-                                <HelpBlock>{M.emptyEmployee}</HelpBlock>
+                                <HelpBlock className="empty-warning">{M.emptyEmployee}</HelpBlock>
                             }
                             {isEmployeeNonUnique &&
-                                <HelpBlock>{M.nonUniqueEmployee}</HelpBlock>
+                                <HelpBlock className="unique-warning">{M.nonUniqueEmployee}</HelpBlock>
                             }
                         </FormGroup>
                         <Button onClick={this.onAddEmployeeClick} >Add</Button>

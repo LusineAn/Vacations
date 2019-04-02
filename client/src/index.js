@@ -4,7 +4,7 @@ import {BrowserRouter} from "react-router-dom";
 
 import App from "./components/container/App";
 
-import "../assets/stylesheets/Vacations.scss"
+import "../assets/stylesheets/VacationApp.scss"
 
 //TO DO
 ReactDOM.render((

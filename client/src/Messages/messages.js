@@ -20,7 +20,8 @@ let messages = {
     firstnamePlaceholder: 'Enter employee First name',
     lastnamePlaceholder: 'Enter employee Last name',
     selectEmployeeForVacation: `Select employee to set vacation date`,
-    selectOption: 'Select option'
+    selectOption: 'Select option',
+    vacationWarning: `* You can't choose that period for vacation.`
 
 };
 module.exports = messages;
