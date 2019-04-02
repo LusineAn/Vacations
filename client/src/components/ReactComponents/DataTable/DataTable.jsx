@@ -24,13 +24,11 @@ class DataTable extends React.Component {
                     <tbody>
                         {items.map((item, index) =>
                             <tr key={index}>
-                            {Object.values(item).map((itemValue, index) =>
-                                <td
-                                    className="datatable__col"
-                                    key={index}>
-                                    {itemValue}
-                                </td>
-                            )}
+                                {Object.values(item).map((itemValue, index) =>
+                                    <td className="datatable__col" key={index}>
+                                        {itemValue ? itemValue : '-'}
+                                    </td>
+                                )}
                             </tr>
                         )}
                     </tbody>

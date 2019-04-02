@@ -45,6 +45,9 @@ class Vacations extends React.Component {
     };
 
     onEmployeeSelect = (event) => {
+        if(!event.target.value.trim()) {
+            return
+        }
         const selectedEmployee = this.props.appStore.vacations[event.target.value];
         this.props.appStore.setSelectedEmployee(selectedEmployee);
     }
@@ -83,11 +86,12 @@ class Vacations extends React.Component {
                 </Row>
                 <Row className="employee-selector">
                     <Col sm={6}>
+                        <span>{M.selectEmployeeForVacation}</span>
                         <FormControl
                             componentClass="select"
-                            placeholder={M.selectEmployeePlaceholder}
                             onChange={this.onEmployeeSelect}
                         >
+                        <option value="">{M.selectOption}</option>
                         {vacations.map((vacation, index) =>
                             <option
                                 key = {index}

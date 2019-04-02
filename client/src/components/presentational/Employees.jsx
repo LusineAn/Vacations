@@ -32,6 +32,9 @@ class Employees extends Component {
     }
 
     onEmployeeProjectSelect = (event) => {
+        if(!event.target.value.trim()) {
+            return
+        }
         const selectedProject = event.target.value;
         this.props.appStore.setSelectedProject(selectedProject);
     }
@@ -85,10 +88,10 @@ class Employees extends Component {
                             <ControlLabel>{M.selectProject}</ControlLabel>
                             <FormControl
                                 componentClass="select"
-                                placeholder={M.selectProjectPlaceholder}
                                 onChange={this.onEmployeeProjectSelect}
                                 value={selectedProject}
                             >
+                            <option value="">{M.selectOption}</option>
                             {projects.map((project, index) =>
                                 <option
                                     key = {index}
