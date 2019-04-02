@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Link } from 'react-router-dom'
-import {Navbar as BSNavbar, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
+import { Link } from "react-router-dom";
+import {Navbar as BSNavbar, Nav} from "react-bootstrap";
 
 class Navbar extends Component {
 

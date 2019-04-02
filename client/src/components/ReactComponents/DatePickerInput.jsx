@@ -1,7 +1,5 @@
 import React from "react";
-import {observer} from "mobx-react";
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import momentPropTypes from 'react-moment-proptypes';
 
 import 'react-dates/initialize';

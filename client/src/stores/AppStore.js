@@ -1,8 +1,6 @@
 import Immutable from 'immutable';
-import {extendObservable, action, computed, toJS} from 'mobx';
-import PropTypes from 'prop-types';
+import {extendObservable, action} from 'mobx';
 import moment from 'moment';
-import momentPropTypes from 'react-moment-proptypes';
 
 class AppStore {
 

@@ -1,9 +1,9 @@
 import React from "react";
-import {observer, toJS} from "mobx-react";
-import PropTypes from 'prop-types';
-import moment from 'moment';
+import {observer} from "mobx-react";
+import PropTypes from "prop-types";
+import moment from "moment";
 
-import {Grid, Row, Col, FormControl} from 'react-bootstrap';
+import {Grid, Row, Col, FormControl} from "react-bootstrap";
 import DataTable from "../ReactComponents/DataTable/DataTable";
 import DatePickerInput from "../ReactComponents/DatePickerInput";
 

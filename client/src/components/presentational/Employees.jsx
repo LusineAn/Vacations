@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import {observer} from "mobx-react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-import {Grid, Row, Col, Button, FormGroup, FormControl, ControlLabel, HelpBlock} from 'react-bootstrap';
+import {Grid, Row, Col, Button, FormGroup, FormControl, ControlLabel, HelpBlock} from "react-bootstrap";
 import DataTable from "../ReactComponents/DataTable/DataTable";
 
 import M from "../../Messages/messages";

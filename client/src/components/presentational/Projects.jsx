@@ -1,14 +1,11 @@
 import React, {Component} from "react";
 import {observer} from "mobx-react";
-import PropTypes from 'prop-types';
-import {decorate, observable} from "mobx";
+import PropTypes from "prop-types";
 
-import {Grid, Row, Col, Button, Form, FormGroup, FormControl, ControlLabel, HelpBlock} from 'react-bootstrap';
+import {Grid, Row, Col, Button, Form, FormGroup, FormControl, ControlLabel, HelpBlock} from "react-bootstrap";
 import DataTable from "../ReactComponents/DataTable/DataTable";
 
-import {AppStore} from '../../stores/AppStore';
-
-import M from '../../Messages/messages';
+import M from "../../Messages/messages";
 
 @observer
 class Projects extends Component {

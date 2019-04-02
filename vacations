@@ -31,31 +31,7 @@ https://www.digitalocean.com/community/tutorials/how-to-install-the-latest-mysql
 
 8. See table: Describe tableName;
 
-9. Find all projects taken by a given employee:
-
-	SELECT
-	    `project`.*
-	FROM
-	    `project`
-	    JOIN `project_employee` ON `project`.`project_id` = `project_employee`.`project`
-	WHERE
-	    `project_employee`.`employee` = 5678
-
-   Find all employees in the given project:
-
-	SELECT
-	    `employee`.*
-	FROM
-	    `employee`
-	    JOIN `project_employee` ON `employee`.`employee_id` = `project_employee`.`employee`
-	WHERE
-	    `project_employee`.`project` = 1234
-
-10. Insert values:
-	INSERT INTO table_name
-	VALUES (value1, value2, value3, ...);
-
-11. Different commands:
+9. Different commands:
 alter table employees change employee_first_name firstname varchar(100);
 
 --------------------SERVER----------------------------

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {observer} from "mobx-react";
 
-import {AppStore} from '../../stores/AppStore';
+import {AppStore} from "../../stores/AppStore";
 
 import NavBar from "../presentational/NavBar";
 import Vacations from "../presentational/Vacations";
