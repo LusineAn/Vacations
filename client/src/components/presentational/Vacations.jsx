@@ -19,7 +19,7 @@ class Vacations extends React.Component {
     constructor() {
         super();
         this.state = {
-            vacationHeaders: ['Project', 'First Name', 'Last Name', 'Vacation Start', 'Vacation End'],
+            vacationHeaders: ['Project', 'First Name', 'Last Name', 'Vacation Start', 'Vacation End']
         }
     }
 
@@ -46,6 +46,7 @@ class Vacations extends React.Component {
     onEmployeeSelect = (event) => {
         this.props.appStore.setIsVacationsIntersect(false);
         if(!event.target.value.trim()) {
+            this.props.appStore.resetVacationData();
             return
         }
         const selectedEmployee = this.props.appStore.vacations[event.target.value];
@@ -82,27 +83,25 @@ class Vacations extends React.Component {
                             onVacationDatesChange={this.onVacationDatesChange}
                             isDayBlocked={this.isDayBlocked}
                         />
-                    </Col>
-                </Row>
-                <Row className="employee-selector">
-                    <Col sm={6}>
-                        <span>{M.selectEmployeeForVacation}</span>
-                        <FormControl
-                            componentClass="select"
-                            onChange={this.onEmployeeSelect}
-                        >
-                        <option value="">{M.selectOption}</option>
-                        {vacations.map((vacation, index) =>
-                            <option
-                                key = {index}
-                                value={index}>
-                                {`${vacation.firstname} ${vacation.lastname}`}
-                            </option>
-                            )}
-                        </FormControl>
-                        {isVacationsIntersect &&
-                            <span className="vacation-warning-message">{M.vacationWarning}</span>
-                        }
+                        <div className="employee-selector">
+                            <span>{M.selectEmployeeForVacation}</span>
+                            <FormControl
+                                componentClass="select"
+                                onChange={this.onEmployeeSelect}
+                            >
+                            <option value="">{M.selectOption}</option>
+                            {vacations.map((vacation, index) =>
+                                <option
+                                    key = {index}
+                                    value={index}>
+                                    {`${vacation.firstname} ${vacation.lastname}`}
+                                </option>
+                                )}
+                            </FormControl>
+                            {isVacationsIntersect &&
+                                <span className="vacation-warning-message">{M.vacationWarning}</span>
+                            }
+                        </div>
                     </Col>
                 </Row>
             </Grid>

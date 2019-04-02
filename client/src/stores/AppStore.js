@@ -210,6 +210,27 @@ class AppStore {
     }
 
     @action
+    addEmployeeVacation() {
+        const employee_id = this.selectedEmployee.employee_id;
+        const project_id = this.selectedEmployee.project_id;
+        const start_date = this.selectedEmployee.start_date;
+        const end_date = this.selectedEmployee.end_date;
+
+        this.checkEmployeeVacation(this.selectedEmployee);
+        if(this.isVacationsIntersect) {
+            return;
+        }
+
+        const url = `http://localhost:8081/vacations/update?employee_id=${employee_id}
+                    &project_id=${project_id}&start_date=${start_date}&end_date=${end_date}`;
+        fetch(url, {method: "PUT"} )
+            .then(response => {
+                return response.json()})
+                .then(() => this.loadVacations())
+                .catch(err => console.log(err));
+    }
+
+    @action
     deleteProject() {
         const projectName = this.project.name;
         const url = `http://localhost:8081/projects/delete?project_name=${projectName}`;
@@ -230,29 +251,6 @@ class AppStore {
             .then(() => this.resetEmployeeData())
             .catch(err => console.log(err))
     }
-
-    @action
-    addEmployeeVacation() {
-        const employee_id = this.selectedEmployee.employee_id;
-        const project_id = this.selectedEmployee.project_id;
-        const start_date = this.selectedEmployee.start_date;
-        const end_date = this.selectedEmployee.end_date;
-
-        this.checkEmployeeVacation(this.selectedEmployee);
-        if(this.isVacationsIntersect) {
-            return;
-        }
-
-        const url = `http://localhost:8081/vacations/update?employee_id=${employee_id}
-                    &project_id=${project_id}&start_date=${start_date}&end_date=${end_date}`;
-        fetch(url, {method: "PUT"} )
-            .then(response => {
-                return response.json()})
-                .then(() => this.loadVacations())
-                .then(() => this.resetVacationData())
-                .catch(err => console.log(err));
-    }
-
 
     getFilteredEmployees(project) {
         const filteredEmployees = this.employees.filter(employee => employee.name === project);
