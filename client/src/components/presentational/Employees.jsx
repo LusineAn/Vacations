@@ -68,7 +68,7 @@ class Employees extends Component {
                             items={employeesList}
                         />
                     </Col>
-                    <Col className="employees__adding" sm={4}>
+                    <Col className="employees__adding" sm={6}>
                         <FormGroup
                             controlId="formBasicText"
                             >
@@ -107,8 +107,10 @@ class Employees extends Component {
                                 <HelpBlock className="unique-warning">{M.nonUniqueEmployee}</HelpBlock>
                             }
                         </FormGroup>
-                        <Button onClick={this.onAddEmployeeClick} >Add</Button>
-                        <Button onClick={this.onDeleteEmployeeClick} >Delete</Button>
+                        <div className="formControl-actions">
+                            <Button className="add-button" onClick={this.onAddEmployeeClick} >Add</Button>
+                            <Button className="delete-button" onClick={this.onDeleteEmployeeClick} >Delete</Button>
+                        </div>
                     </Col>
                 </Row>
             </Grid>

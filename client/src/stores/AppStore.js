@@ -23,7 +23,6 @@ class AppStore {
                 vacation_start: '',
                 vacation_end: ''
             },
-            // selectedEmployee: Immutable.Map(),
             selectedEmployee: {
                 employee_id: '',
                 project_id: '',

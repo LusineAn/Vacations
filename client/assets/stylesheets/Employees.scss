@@ -1,6 +1,23 @@
 .employees {
     margin-top: 50px;
-    padding: 7px;
+    padding: 0 7px;
+
+    .employees__adding {
+        font-weight: bold;
+
+        .form-control {
+            margin-bottom: 10px;
+        }
+
+        .formControl-actions {
+            display: flex;
+            justify-content: flex-end;
+
+            .add-button {
+                margin-right: 30px
+            }
+        }
+    }
 }
 
 .unique-warning,
