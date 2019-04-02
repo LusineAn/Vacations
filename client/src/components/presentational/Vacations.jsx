@@ -52,7 +52,16 @@ class Vacations extends React.Component {
     render() {
         const {vacations, selectedEmployee} = this.props.appStore;
         const {vacationHeaders} = this.state;
-
+        const vacationsList = vacations.map(vacation => {
+            const simpleVacation = {
+                project: vacation.name,
+                firstname: vacation.firstname,
+                lastname: vacation.lastname,
+                start_date: vacation.start_date ? moment(vacation.start_date).format('MM/DD/YYYY') : null,
+                end_date: vacation.end_date ? moment(vacation.end_date).format('MM/DD/YYYY') : null
+            };
+            return simpleVacation;
+        })
         return(
             <Grid>
                 <Row className="vacations">
@@ -60,7 +69,7 @@ class Vacations extends React.Component {
                         <DataTable
                             className="vacations-table"
                             headers={vacationHeaders}
-                            items={vacations}
+                            items={vacationsList}
                         />
                     </Col>
                     <Col className="date-picker" sm ={6}>

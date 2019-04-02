@@ -47,6 +47,14 @@ class Employees extends Component {
     render() {
         const {projects, employees, newEmployee, selectedProject, emptyEmployee, isEmployeeNonUnique} = this.props.appStore;
         const {employeeHeaders} = this.state;
+        const employeesList = employees.map(employee => {
+            const simpleEmployee = {
+                firstname: employee.firstname,
+                lastname: employee.lastname,
+                project: employee.name
+            };
+            return simpleEmployee;
+        })
         return(
             <Grid>
                 <Row className="employees">
@@ -54,7 +62,7 @@ class Employees extends Component {
                         <DataTable
                             className="employees-table"
                             headers={employeeHeaders}
-                            items={employees}
+                            items={employeesList}
                         />
                     </Col>
                     <Col className="employees__adding" sm={4}>

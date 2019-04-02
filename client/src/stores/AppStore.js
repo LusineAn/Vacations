@@ -145,7 +145,7 @@ class AppStore {
 
     @action
     resetVacationData() {
-        this.selectedEmployee = '';
+        this.selectedEmployee = {};
     }
 
     @action

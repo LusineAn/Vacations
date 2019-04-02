@@ -25,6 +25,8 @@ class App extends Component {
     render() {
         return(
             <div>
+                {/* <NavBar></NavBar> */}
+                {/* <Routes></Routes> */}
                 {/* <Projects appStore={this.state.appStore}/> */}
                 {/* <Employees appStore={this.state.appStore}/> */}
                 <Vacations appStore={this.state.appStore}/>
