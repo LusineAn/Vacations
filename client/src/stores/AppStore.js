@@ -101,7 +101,7 @@ class AppStore {
 
     @action
     setSelectedEmployee(selectedEmployee) {
-        this.selectedEmployee = selectedEmployee;
+        this.selectedEmployee = Object.assign({}, selectedEmployee);
     }
 
     @action
