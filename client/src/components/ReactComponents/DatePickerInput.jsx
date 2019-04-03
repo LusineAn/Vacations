@@ -63,7 +63,7 @@ class DatePickerInput extends React.Component {
             <DayPickerRangeController
                 startDate={startDate} // momentPropTypes.momentObj or null,
                 endDate={endDate} // momentPropTypes.momentObj or null,
-                focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                focusedInput={focusedInput} // PropTypes.oneOf([startDate, endDate]) or null,
                 onDatesChange={this.onDatesChange} // PropTypes.func.isRequired,
                 onFocusChange={this.onFocusChange} // PropTypes.func.isRequired,
                 isDayBlocked={this.isDayBlocked}  //Figure out which dates we allow to select
