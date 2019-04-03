@@ -42,9 +42,10 @@ class AppStore {
     };
 
     @action
-    loadData = async () => {
-        await this.loadProjects();
-        await this.loadEmployees();
+    loadData = () => {
+        this.loadProjects();
+        this.loadEmployees();
+        this.loadVacations();
     };
 
     @action
@@ -250,7 +251,7 @@ class AppStore {
     }
 
     getFilteredEmployees(project) {
-        const filteredEmployees = this.employees.filter(employee => employee.name === project);
+        const filteredEmployees = this.vacations.filter(employee => employee.name === project);
         return filteredEmployees;
     }
 
