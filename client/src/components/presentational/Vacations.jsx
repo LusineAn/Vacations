@@ -61,8 +61,8 @@ class Vacations extends React.Component {
                 project: vacation.name,
                 firstname: vacation.firstname,
                 lastname: vacation.lastname,
-                start_date: vacation.start_date ? moment(vacation.start_date).format('MM/DD/YYYY') : null,
-                end_date: vacation.end_date ? moment(vacation.end_date).format('MM/DD/YYYY') : null
+                start_date: vacation.start_date ? moment(vacation.start_date).format('DD/MM/YYYY') : null,
+                end_date: vacation.end_date ? moment(vacation.end_date).format('DD/MM/YYYY') : null
             };
             return simpleVacation;
         })

@@ -257,15 +257,26 @@ class AppStore {
     checkEmployeeVacation(employee) {
         const employeeProject = employee.name;
         const filteredEmployees = this.getFilteredEmployees(employeeProject);
+        const employeeStartDate = moment(employee.start_date);
+        const employeeEndDate = moment(employee.end_date);
+
+        this.isVacationsIntersect = false;
         this.isVacationsIntersect = !!filteredEmployees.find(filteredEmployee => {
-        return (
-            (filteredEmployee.employee_id !== employee.employee_id) && (
-                (moment(employee.start_date).isSameOrAfter(moment(filteredEmployee.start_date)) &&
-                moment(employee.start_date).isSameOrBefore(moment(filteredEmployee.end_date))) ||
-                (moment(employee.end_date).isSameOrAfter(moment(filteredEmployee.start_date)) &&
-                moment(employee.end_date).isSameOrBefore(moment(filteredEmployee.end_date)))
-            )
-        )});
+            if(filteredEmployee.employee_id === employee.employee_id) {
+                return false;
+            }
+            const filteredEmployeeStartDate = moment(new Date(filteredEmployee.start_date)).format('MM/DD/YYYY');
+            const filteredEmployeeEndDate = moment(new Date(filteredEmployee.end_date)).format('MM/DD/YYYY');
+            return (
+                (
+                    employeeStartDate.isSameOrBefore(filteredEmployeeStartDate) &&
+                    employeeEndDate.isSameOrAfter(filteredEmployeeStartDate)
+                ) ||
+                (
+                    employeeStartDate.isSameOrAfter(filteredEmployeeStartDate) &&
+                    employeeStartDate.isSameOrBefore(filteredEmployeeEndDate)
+                )
+            )});
     }
 }
 
