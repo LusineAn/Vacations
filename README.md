@@ -38,7 +38,7 @@ Create MySQL db:
         FOREIGN KEY (employee_id) REFERENCES employees (id) ON DELETE RESTRICT ON UPDATE CASCADE
     );
 
---------------------Used Libraries----------------------------
+-------------------- Used Libraries ----------------------------
 
     https://www.youtube.com/watch?v=HPIjjFGYSJ4
     https://hackernoon.com/how-to-build-a-react-project-from-scratch-using-webpack-4-and-babel-56d4a26afd32
