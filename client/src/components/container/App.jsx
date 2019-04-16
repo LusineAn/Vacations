@@ -16,7 +16,7 @@ class App extends React.Component {
         }
     }
 
-    async componentWillMount() {
+    async componentDidMount() {
         this.state.appStore.loadData();
     }
 
